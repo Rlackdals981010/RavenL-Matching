@@ -14,7 +14,7 @@ const sendVerificationEmail = async (email, code) => {
     service: 'Gmail',
     auth: {
       user: process.env.EMAIL_USER, // Gmail 계정
-      pass: process.env.EMAIL_PASS, // Gmail 비밀번호 또는 앱 비밀번호
+      pass: process.env.EMAIL_PASS, // 앱 비밀번호
     },
   });
 
