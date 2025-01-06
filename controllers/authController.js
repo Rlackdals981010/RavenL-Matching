@@ -169,3 +169,80 @@ exports.login = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
+// 비밀번호 재설정 요청
+exports.requestPasswordReset = async (req, res) => {
+  try {
+    const { email } = req.body;
+
+    // 사용자 확인
+    const user = await User.findOne({ where: { email } });
+    if (!user) {
+      return res.status(404).json({ message: 'User not found.' });
+    }
+
+    // 토큰 생성
+    const resetToken = crypto.randomBytes(3).toString('hex');
+    const expiresAt = Date.now() + 15 * 60 * 1000; // 15분 유효
+
+    // 기존 비밀번호 재설정 요청 삭제
+    await Verification.destroy({ where: { email} });
+
+    // 새로운 비밀번호 재설정 요청 저장
+    await Verification.create({
+      email,
+      code: resetToken,
+      expiresAt,
+    });
+
+    // 이메일 전송
+    const transporter = nodemailer.createTransport({
+      service: 'Gmail',
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+      },
+    });
+
+    await transporter.sendMail({
+      from: process.env.EMAIL_USER,
+      to: email,
+      subject: 'Password Reset',
+      text: `Your password reset token is: ${resetToken}. It is valid for 15 minutes.`,
+    });
+
+    res.status(200).json({ message: 'Password reset token sent to email.' });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+
+// 비밀번호 재설정
+exports.resetPassword = async (req, res) => {
+  try {
+    const { email, token, newPassword } = req.body;
+
+    // 토큰 검증
+    const verification = await Verification.findOne({
+      where: { email, code: token },
+    });
+
+    if (!verification || verification.expiresAt < Date.now()) {
+      return res.status(400).json({ message: 'Invalid or expired token.' });
+    }
+
+    // 비밀번호 변경
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    const user = await User.findOne({ where: { email } });
+    user.password = hashedPassword;
+    await user.save();
+
+    // 사용된 토큰 삭제
+    await verification.destroy();
+
+    res.status(200).json({ message: 'Password reset successful.' });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
