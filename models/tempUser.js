@@ -6,6 +6,7 @@ const TempUser = sequelize.define('TempUser', {
     type: DataTypes.STRING,
     allowNull: false,
     unique: true,
+    validate: { isEmail: true },
   },
   password: {
     type: DataTypes.STRING,
@@ -15,12 +16,24 @@ const TempUser = sequelize.define('TempUser', {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  phoneNumber: {
+  company: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  position: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  region: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  product: {
     type: DataTypes.STRING,
     allowNull: false,
   },
   job: {
-    type: DataTypes.STRING,
+    type: DataTypes.ENUM('buyer', 'seller', 'admin'),
     allowNull: false,
   },
 });

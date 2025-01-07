@@ -29,7 +29,9 @@ const sendVerificationEmail = async (email, code) => {
 // 회원가입
 exports.signup = async (req, res) => {
   try {
-    const { email, password, name, phoneNumber, job } = req.body;
+    const { email, password, name,
+      company, position, region,
+      product, role, job } = req.body;
 
     // 이메일 중복 확인
     const existingUser = await User.findOne({ where: { email } });
@@ -47,7 +49,10 @@ exports.signup = async (req, res) => {
       email,
       password: hashedPassword,
       name,
-      phoneNumber,
+      company,
+      position,
+      region,
+      product,
       job,
     });
 
@@ -85,10 +90,15 @@ exports.verifyCode = async (req, res) => {
       email: tempUser.email,
       password: tempUser.password,
       name: tempUser.name,
-      phoneNumber: tempUser.phoneNumber,
+      company: tempUser.company,
+      position : tempUser.position,
+      region : tempUser.region,
+      product : tempUser.product,
       role: 'user',
       job: tempUser.job,
       state: 'active',
+      rating : 0,
+      transaction_count : 0
     });
 
     // TempUser 및 Verification 데이터 삭제
@@ -103,7 +113,7 @@ exports.verifyCode = async (req, res) => {
 
 exports.adminSignup = async (req, res) => {
   try {
-    const { email, password, name, phoneNumber, job } = req.body;
+    const { email, password } = req.body;
 
     // 이메일 중복 확인
     const existingUser = await User.findOne({ where: { email } });
@@ -118,11 +128,16 @@ exports.adminSignup = async (req, res) => {
     const user = await User.create({
       email,
       password: hashedPassword,
-      name,
-      phoneNumber,
+      name: 'admin',
+      company: 'admin',
+      position : 'admin',
+      region : 'admin',
+      product : 'admin',
       role: 'admin',
-      job,
-      state: 'active'
+      job: 'admin',
+      state: 'active',
+      rating : 0,
+      transaction_count : 0
     });
 
     res.status(201).json({ message: 'User registered successfully', userId: user.id });

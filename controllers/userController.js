@@ -22,16 +22,15 @@ exports.getUserProfile = async (req, res) => {
 // 내 정보 수정 
 exports.updateUserProfile = async (req, res) => {
   try {
-    const { email, name, phoneNumber, job } = req.body;
+    const { name, phoneNumber, job } = req.body;
 
     // 수정할 데이터가 없는 경우
-    if (!email && !name && !phoneNumber && !job) {
+    if ( !name && !phoneNumber && !job) {
       return res.status(400).json({ message: 'At least one field is required to update profile' });
     }
 
     // 업데이트 데이터 구성
     const updates = {};
-    if (email) updates.email = email;
     if (name) updates.name = name;
     if (phoneNumber) updates.phoneNumber = phoneNumber;
     if (job) updates.job = job;

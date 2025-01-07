@@ -12,16 +12,14 @@ const { sequelize } = require('./config/database');
 const authRoutes = require('./routes/authRoutes');
 const userRoutes = require('./routes/userRoutes');
 const postRoutes = require('./routes/postRoutes');
-const reportRoutes = require('./routes/reportRoutes');
-const markRoutes = require('./routes/markRoutes');
 const searchRoutes = require('./routes/searchRoutes');
+const contactRoutes = require('./routes/contactRoutes');
 
 app.use('/auth', authRoutes);
 app.use('/mypage', userRoutes);
 app.use('/', postRoutes);
-app.use('/reports', reportRoutes);
-app.use('/mark',markRoutes);
 app.use('/search', searchRoutes);
+app.use('/', contactRoutes);
 
 // 데이터베이스 연결
 sequelize.authenticate()

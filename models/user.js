@@ -6,9 +6,7 @@ const User = sequelize.define('User', {
     type: DataTypes.STRING,
     allowNull: false,
     unique: true,
-    validate: {
-      isEmail: true,
-    },
+    validate: { isEmail: true },
   },
   password: {
     type: DataTypes.STRING,
@@ -18,7 +16,19 @@ const User = sequelize.define('User', {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  phoneNumber: {
+  company: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  position: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  region: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  product: {
     type: DataTypes.STRING,
     allowNull: false,
   },
@@ -27,13 +37,22 @@ const User = sequelize.define('User', {
     allowNull: false,
   },
   job: {
-    type: DataTypes.ENUM('buyer', 'seller','admin'),
+    type: DataTypes.ENUM('buyer', 'seller', 'admin'),
     allowNull: false,
   },
   state: {
     type: DataTypes.ENUM('active', 'deactive'),
     allowNull: false,
-  }
+  },
+  // 캐싱 필드
+  rating: {
+    type: DataTypes.FLOAT(2, 1), // 최대 소수점 한 자리
+    defaultValue: 0, // 초기값
+  },
+  transaction_count: {
+    type: DataTypes.INTEGER, // 총 거래 수
+    defaultValue: 0, // 초기값
+  },
 }, {
   tableName: 'users',
   timestamps: true,
