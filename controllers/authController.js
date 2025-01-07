@@ -137,6 +137,7 @@ exports.adminSignup = async (req, res) => {
       job: 'admin',
       state: 'active',
       rating : 0,
+      rating_count:0,
       transaction_count : 0
     });
 

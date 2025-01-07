@@ -86,13 +86,15 @@ exports.changeState = async (req, res) => {
 
     // 1. Contact 데이터를 조회합니다.
     const contact = await Contact.findOne({ where: { id } });
+    const user1 = await User.findByPk(contact.applicantId);
+    const user2 = await User.findByPk(contact.receiverId);
 
     // 2. 데이터가 없을 경우 처리
     if (!contact) {
       return res.status(404).json({ message: 'Contact not found' });
     }
 
-    if(contact.receiverId!==req.user.id){
+    if (contact.receiverId !== req.user.id) {
       return res.status(404).json({ message: '권한이 없습니다.' });
     }
 
@@ -101,6 +103,16 @@ exports.changeState = async (req, res) => {
 
     // 4. 상태를 업데이트합니다.
     contact.process = newState;
+    if (contact.process === 'Accepted') {
+      user1.transaction_count++;
+      user2.transaction_count++;
+    }
+    else{
+      user1.transaction_count--;
+      user2.transaction_count--;
+    }
+    await user1.save();
+    await user2.save();
     await contact.save();
 
     // 5. 성공 응답
@@ -155,19 +167,19 @@ exports.score = async (req, res) => {
       return res.status(404).json({ message: 'Target user not found' });
     }
 
-  
+
 
     // 새로운 평점 추가
     const currentRating = targetUser.rating || 0; // null인 경우 0으로 대체
-    const currentTransactionCount = targetUser.transaction_count || 0; // null인 경우 0으로 대체
-    
+    const currentTransactionCount = targetUser.rating_count || 0; // null인 경우 0으로 대체
+
     const newTotalRating = currentRating * currentTransactionCount + rating;
     const newRatingCount = currentTransactionCount + 1;
     const newAverageRating = newTotalRating / newRatingCount;
 
     // User 테이블 업데이트
     targetUser.rating = newAverageRating;
-    targetUser.transaction_count = newRatingCount;
+    targetUser.rating_count = newRatingCount;
     await targetUser.save();
 
     // 8. Contact 테이블의 플래그 업데이트
@@ -182,7 +194,7 @@ exports.score = async (req, res) => {
     res.status(200).json({
       message: 'Rating updated successfully',
       user: {
-        id: targetUser.id,        
+        id: targetUser.id,
         totalRating: targetUser.rating,
         ratingCount: targetUser.transaction_count,
       },

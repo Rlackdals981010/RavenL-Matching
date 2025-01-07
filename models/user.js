@@ -22,7 +22,7 @@ const User = sequelize.define('User', {
   },
   position: {
     type: DataTypes.STRING,
-    allowNull: false,
+    allowNull: true,
   },
   region: {
     type: DataTypes.STRING,
@@ -47,6 +47,10 @@ const User = sequelize.define('User', {
   // 캐싱 필드
   rating: {
     type: DataTypes.FLOAT(2, 1), // 최대 소수점 한 자리
+    defaultValue: 0, // 초기값
+  },
+  rating_count: {
+    type: DataTypes.INTEGER, // 총 거래 수
     defaultValue: 0, // 초기값
   },
   transaction_count: {
