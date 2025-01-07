@@ -1,11 +1,12 @@
 const bcrypt = require('bcrypt');
 const User = require('../models/user');
+const ResignComment = require('../models/resignComment'); 
 
 // 내 정보 조회 
 exports.getUserProfile = async (req, res) => {
   try {
     const user = await User.findByPk(req.user.id, {
-      attributes: ['id', 'email', 'name', 'phoneNumber', 'job', 'createdAt', 'updatedAt'],
+      attributes: ['id', 'email', 'name', 'phoneNumber', 'job', 'createdAt'],
     });
 
     if (!user) {
@@ -84,6 +85,45 @@ exports.updateUserPassword = async (req, res) => {
     await user.save();
 
     res.status(200).json({ message: 'Password updated successfully' });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+exports.resign = async (req, res) => {
+  try {
+    const { email, password, comment } = req.body;
+
+    // 사용자 조회 (비밀번호 포함)
+    const user = await User.findByPk(req.user.id, {
+      attributes: ['id', 'email', 'password', 'name', 'phoneNumber', 'job', 'createdAt'],
+    });
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found.' });
+    }
+
+    // 이메일 확인
+    if (user.email !== email) {
+      return res.status(400).json({ message: '이메일을 확인해 주세요.' });
+    }
+
+    // 비밀번호 검증
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+    if (!isPasswordValid) {
+      return res.status(401).json({ message: 'Invalid credentials.' });
+    }
+
+    // 탈퇴 이유 저장
+    await ResignComment.create({
+      email,
+      comment,
+    });
+
+    // 사용자 상태 변경
+    await user.update({ state: 'deactive' }); // 상태를 deactive로 변경
+
+    res.status(200).json({ message: '회원 탈퇴가 완료되었습니다. 상태가 비활성화되었습니다.' });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

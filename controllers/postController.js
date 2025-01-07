@@ -8,32 +8,6 @@ const MESSAGES = {
     NOTICE_NOT_FOUND: 'Notice not found.',
 };
 
-// 글 생성 (문의)
-exports.createInquiry = async (req, res) => {
-    try {
-        const { id: userId, role } = req.user;
-
-        if (role !== 'user') {
-            return res.status(403).json({ message: MESSAGES.UNAUTHORIZED });
-        }
-
-        const { title, content } = req.body;
-        if (!title || !content) {
-            return res.status(400).json({ message: 'Title and content are required' });
-        }
-
-        const post = await Post.create({
-            type: 'inquiry',
-            title,
-            content,
-            userId,
-        });
-
-        res.status(201).json({ message: 'Inquiry created successfully', post });
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-};
 
 // 글 생성 (공지)
 exports.createNotice = async (req, res) => {
@@ -62,38 +36,6 @@ exports.createNotice = async (req, res) => {
     }
 };
 
-// 글 목록 조회 (문의) (admin)
-exports.getInquirysAdmin = async (req, res) => {
-    try {
-        if (req.user.role !== 'admin') {
-            return res.status(403).json({ message: 'Only admins can read all inquiries.' });
-        }
-
-        const posts = await Post.findAll({ where: { type: 'inquiry' } });
-        res.status(200).json(posts);
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-};
-
-// 글 목록 조회 (문의) (user)
-exports.getInquirysUser = async (req, res) => {
-    try {
-        const userId = req.user.id;
-
-        const posts = await Post.findAll({
-            where: {
-                type: 'inquiry',
-                userId,
-            },
-        });
-
-        res.status(200).json(posts);
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-};
-
 // 글 목록 조회 (공지)
 exports.getNotices = async (req, res) => {
     try {
@@ -107,27 +49,6 @@ exports.getNotices = async (req, res) => {
         });
 
         res.status(200).json(posts);
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-};
-
-// 글 단건 조회 (문의)
-exports.getInquiry = async (req, res) => {
-    try {
-        const { id } = req.params;
-
-        const post = await Post.findOne({ where: { id, type: 'inquiry' } });
-
-        if (!post) {
-            return res.status(404).json({ message: MESSAGES.INQUIRY_NOT_FOUND });
-        }
-
-        if (post.userId !== req.user.id && req.user.role !== 'admin') {
-            return res.status(403).json({ message: MESSAGES.UNAUTHORIZED });
-        }
-
-        res.status(200).json(post);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
@@ -163,8 +84,8 @@ exports.patchPost = async (req, res) => {
             return res.status(404).json({ message: 'Post not found.' });
         }
 
-        // 관리자 또는 작성자인 경우에만 수정 허용
-        if (post.userId === req.user.id) {
+        // 작성자인 경우에만 수정 허용
+        if (req.user.role==='admin') {
             // 요청 데이터로 게시글 업데이트
             await Post.update(
                 { title, content },
@@ -193,7 +114,7 @@ exports.deletePost = async (req, res) => {
             return res.status(404).json({ message: MESSAGES.POST_NOT_FOUND });
         }
 
-        if (req.user.role === 'admin' || post.userId === req.user.id) {
+        if (req.user.role === 'admin') {
             await Post.destroy({ where: { id } });
             return res.status(200).json({ message: 'Post deleted successfully' });
         }

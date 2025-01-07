@@ -1,5 +1,5 @@
 const express = require('express');
-const { getUserProfile } = require('../controllers/userController');
+const { getUserProfile, resign } = require('../controllers/userController');
 const { updateUserProfile, updateUserPassword } = require('../controllers/userController');
 const authMiddleware = require('../middlewares/authMiddleware');
 const router = express.Router();
@@ -10,5 +10,8 @@ router.get('/info', authMiddleware, getUserProfile);
 router.put('/info', authMiddleware, updateUserProfile);
 // 비밀번호 수정
 router.put('/password', authMiddleware, updateUserPassword);
+// 회원 탈퇴
+router.post('/resign',authMiddleware,resign);
+
 
 module.exports = router;

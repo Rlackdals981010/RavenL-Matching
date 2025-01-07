@@ -3,7 +3,7 @@ const { sequelize } = require('../config/database');
 
 const Post = sequelize.define('Post', {
     type: {
-        type: DataTypes.ENUM('inquiry', 'notice'), // 타입 구분
+        type: DataTypes.ENUM('notice'), // 타입 구분
         allowNull: false,
     },
     title: {

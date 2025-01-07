@@ -147,6 +147,10 @@ exports.login = async (req, res) => {
       return res.status(401).json({ message: 'Invalid credentials' });
     }
 
+    if(user.state==='deactive'){
+      return res.status(401).json({ message: '탈퇴한 회원입니다.' });
+    }
+
     // 비밀번호 검증
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
