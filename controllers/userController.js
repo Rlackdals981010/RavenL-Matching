@@ -22,17 +22,20 @@ exports.getUserProfile = async (req, res) => {
 // 내 정보 수정 
 exports.updateUserProfile = async (req, res) => {
   try {
-    const { name, phoneNumber, job } = req.body;
+    const { name, company, position,region,product,job } = req.body;
 
     // 수정할 데이터가 없는 경우
-    if ( !name && !phoneNumber && !job) {
+    if ( !name && !company &&!position&& !region&& !product &&!job) {
       return res.status(400).json({ message: 'At least one field is required to update profile' });
     }
 
     // 업데이트 데이터 구성
     const updates = {};
     if (name) updates.name = name;
-    if (phoneNumber) updates.phoneNumber = phoneNumber;
+    if (company) updates.company = company;
+    if (position) updates.position = position;
+    if (region) updates.region = region;
+    if (product) updates.product = product;
     if (job) updates.job = job;
 
     // 사용자 데이터 업데이트
@@ -41,7 +44,7 @@ exports.updateUserProfile = async (req, res) => {
     if (updated) {
       // 업데이트된 사용자 정보 반환
       const updatedUser = await User.findByPk(req.user.id, {
-        attributes: ['id', 'email', 'name', 'phoneNumber', 'job', 'createdAt', 'updatedAt'],
+        attributes: ['id', 'email', 'name','company','position','region','product','job'],
       });
       return res.status(200).json({ message: 'Profile updated successfully', user: updatedUser });
     }
@@ -55,7 +58,7 @@ exports.updateUserProfile = async (req, res) => {
 // 비밀번호 수정
 exports.updateUserPassword = async (req, res) => {
   try {
-    const { oldPassword, newPassword, check } = req.body;
+    const { oldPassword, newPassword } = req.body;
 
     if (!oldPassword || !newPassword) {
       return res.status(400).json({ message: 'Old and new passwords are required' });
@@ -71,11 +74,6 @@ exports.updateUserPassword = async (req, res) => {
     const isPasswordValid = await bcrypt.compare(oldPassword, user.password);
     if (!isPasswordValid) {
       return res.status(401).json({ message: 'Old password is incorrect' });
-    }
-
-    // 비밀번호 확인 
-    if (check != newPassword) {
-      return res.status(401).json({ message: '비밀번호를 다시 확인해보세요.' });
     }
 
     // 새 비밀번호 암호화 및 저장
