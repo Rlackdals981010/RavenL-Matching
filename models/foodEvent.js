@@ -1,5 +1,5 @@
 const { DataTypes } = require('sequelize');
-const {sequelize} = require('../config/database'); // Sequelize 인스턴스 가져오기 (경로는 프로젝트에 맞게 수정)
+const { sequelize } = require('../config/database');
 
 const FoodEvent = sequelize.define('FoodEvent', {
     id: {
@@ -9,7 +9,7 @@ const FoodEvent = sequelize.define('FoodEvent', {
     },
     product_name: {
         type: DataTypes.STRING,
-        allowNull: true, // NULL 허용 여부 (필요에 따라 true/false로 변경)
+        allowNull: true,
     },
     brand_product: {
         type: DataTypes.STRING,
