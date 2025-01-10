@@ -44,6 +44,7 @@ exports.getNotices = async (req, res) => {
 
         const posts = await Post.findAll({
             where: { type: 'notice' },
+            attributes: ['id','title','createdAt'],
             offset,
             limit: parseInt(limit, 10),
         });

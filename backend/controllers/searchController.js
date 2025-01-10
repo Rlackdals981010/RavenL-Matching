@@ -40,7 +40,7 @@ exports.queryDatabase = async (req, res) => {
 
         // **3. OpenAI에 product 데이터 전달**
         const gptResponse = await openai.chat.completions.create({
-            model: "gpt-4",
+            model: "gpt-3.5-turbo",
             messages: [
                 {
                     role: "user",

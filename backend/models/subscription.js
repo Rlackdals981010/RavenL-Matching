@@ -11,8 +11,8 @@ const Subscription = sequelize.define('Subscription', {
         defaultValue: 'free',
     },
     status: {
-        type: DataTypes.ENUM('active', 'canceled'),
-        defaultValue: 'active',
+        type: DataTypes.ENUM('ACTIVE', 'CANCELED'),
+        defaultValue: 'ACTIVE',
     },
     startDate: {
         type: DataTypes.DATE,
@@ -27,6 +27,10 @@ const Subscription = sequelize.define('Subscription', {
     payerId: {
         type: DataTypes.STRING,
     },
+}, {
+    tableName: 'subscription',
+    timestamps: true,
 });
+
 
 module.exports = Subscription;

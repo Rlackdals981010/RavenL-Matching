@@ -15,6 +15,10 @@ const Verification = sequelize.define('Verification', {
     type: DataTypes.DATE,
     allowNull: false,
   },
+}, {
+  tableName: 'verficiation',
+  timestamps: true,
 });
+
 
 module.exports = Verification;

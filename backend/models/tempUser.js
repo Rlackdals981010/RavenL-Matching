@@ -36,6 +36,10 @@ const TempUser = sequelize.define('TempUser', {
     type: DataTypes.ENUM('buyer', 'seller', 'admin'),
     allowNull: false,
   },
+}, {
+  tableName: 'tempUsers',
+  timestamps: true,
 });
+
 
 module.exports = TempUser;

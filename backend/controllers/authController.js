@@ -29,9 +29,23 @@ const sendVerificationEmail = async (email, code) => {
 // 회원가입
 exports.signup = async (req, res) => {
   try {
-    const { email, password, name,
-      company, position, region,
-      product, role, job } = req.body;
+    const { email, password, name, company, position, region, product, job } = req.body;
+
+    // 필수 필드 검증
+    if (!email || !password || !name || !job) {
+      return res.status(400).json({ message: 'Missing required fields.' });
+    }
+
+    // 이메일 형식 검증
+    const isValidEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    if (!isValidEmail(email)) {
+      return res.status(400).json({ message: 'Invalid email format.' });
+    }
+
+    // 비밀번호 검증 (최소 길이 및 복잡성 체크)
+    if (password.length < 8 || !/[A-Z]/.test(password) || !/[0-9]/.test(password)) {
+      return res.status(400).json({ message: 'Password must be at least 8 characters long and include at least one uppercase letter and one number.' });
+    }
 
     // 이메일 중복 확인
     const existingUser = await User.findOne({ where: { email } });
@@ -39,11 +53,19 @@ exports.signup = async (req, res) => {
       return res.status(400).json({ message: 'Email is already in use.' });
     }
 
-    // 인증 코드 생성 및 전송
-    const verificationCode = crypto.randomBytes(3).toString('hex');
-    await sendVerificationEmail(email, verificationCode);
+    // 기존 Verification 데이터 삭제
+    const existingVerification = await Verification.findOne({ where: { email } });
+    if (existingVerification) {
+      await Verification.destroy({ where: { email } });
+    }
 
-    // TempUser에 데이터 저장
+    // 기존 TempUser 데이터 삭제
+    const existingTempUser = await TempUser.findOne({ where: { email } });
+    if (existingTempUser) {
+      await TempUser.destroy({ where: { email } });
+    }
+
+    // TempUser 데이터 저장
     const hashedPassword = await bcrypt.hash(password, 10);
     await TempUser.create({
       email,
@@ -56,7 +78,11 @@ exports.signup = async (req, res) => {
       job,
     });
 
-    // Verification에 인증 코드 저장
+    // 인증 코드 생성 (6자리 숫자)
+    const verificationCode = crypto.randomInt(100000, 999999).toString();
+    await sendVerificationEmail(email, verificationCode);
+
+    // Verification 데이터 저장
     await Verification.create({
       email,
       code: verificationCode,
@@ -65,19 +91,30 @@ exports.signup = async (req, res) => {
 
     res.status(200).json({ message: 'Verification code sent to your email.' });
   } catch (error) {
+    console.error('Signup error:', error);
+
+    // 에러 발생 시 TempUser 및 Verification 데이터 삭제
+    if (req.body?.email) {
+      await TempUser.destroy({ where: { email: req.body.email } });
+      await Verification.destroy({ where: { email: req.body.email } });
+    }
+
     res.status(500).json({ error: error.message });
   }
 };
 
 exports.verifyCode = async (req, res) => {
   try {
-    const { email, code } = req.body;
+    const { code } = req.body;
 
     // 인증 코드 확인
-    const verification = await Verification.findOne({ where: { email, code } });
+    const verification = await Verification.findOne({ where: { code } });
     if (!verification || verification.expiresAt < Date.now()) {
       return res.status(400).json({ message: 'Invalid or expired code.' });
     }
+
+    // Verification에서 email 추출
+    const email = verification.email;
 
     // TempUser에서 사용자 데이터 가져오기
     const tempUser = await TempUser.findOne({ where: { email } });
@@ -96,9 +133,7 @@ exports.verifyCode = async (req, res) => {
       product: tempUser.product,
       role: 'user',
       job: tempUser.job,
-      state: 'active',
-      rating: 0,
-      transaction_count: 0
+      state: 'active'
     });
 
     // TempUser 및 Verification 데이터 삭제
@@ -107,6 +142,7 @@ exports.verifyCode = async (req, res) => {
 
     res.status(201).json({ message: 'User registered successfully', userId: user.id });
   } catch (error) {
+    console.error('Verification error:', error);
     res.status(500).json({ error: error.message });
   }
 };
@@ -170,7 +206,7 @@ exports.login = async (req, res) => {
     // 비밀번호 검증
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
-      return res.status(401).json({ message: 'Invalid credentials' });
+      return res.status(401).json({ message: 'Uncorrect Password' });
     }
 
     // JWT 토큰 생성

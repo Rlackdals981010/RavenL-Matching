@@ -1,13 +1,14 @@
 const bcrypt = require('bcrypt');
 const User = require('../models/user');
-const ResignComment = require('../models/resignComment'); 
+const ResignComment = require('../models/resignComment');
 
 // 내 정보 조회 
 exports.getUserProfile = async (req, res) => {
   try {
     const user = await User.findByPk(req.user.id, {
-      attributes: ['id', 'email', 'name', 'phoneNumber', 'job', 'createdAt'],
-    });
+      attributes: ['email', 'name', 'company', 'position', 'region', 'product', 'job'],
+    }
+    );
 
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
@@ -22,10 +23,10 @@ exports.getUserProfile = async (req, res) => {
 // 내 정보 수정 
 exports.updateUserProfile = async (req, res) => {
   try {
-    const { name, company, position,region,product,job } = req.body;
+    const { name, company, position, region, product, job } = req.body;
 
     // 수정할 데이터가 없는 경우
-    if ( !name && !company &&!position&& !region&& !product &&!job) {
+    if (!name && !company && !position && !region && !product && !job) {
       return res.status(400).json({ message: 'At least one field is required to update profile' });
     }
 
@@ -44,7 +45,7 @@ exports.updateUserProfile = async (req, res) => {
     if (updated) {
       // 업데이트된 사용자 정보 반환
       const updatedUser = await User.findByPk(req.user.id, {
-        attributes: ['id', 'email', 'name','company','position','region','product','job'],
+        attributes: ['email', 'name', 'company', 'position', 'region', 'product', 'job'],
       });
       return res.status(200).json({ message: 'Profile updated successfully', user: updatedUser });
     }
@@ -76,6 +77,15 @@ exports.updateUserPassword = async (req, res) => {
       return res.status(401).json({ message: 'Old password is incorrect' });
     }
 
+    if(oldPassword === newPassword){
+      return res.status(400).json({ message: 'Old and new passwords have to different' });
+    }
+
+    // 비밀번호 검증 (최소 길이 및 복잡성 체크)
+    if (newPassword.length < 8 || !/[A-Z]/.test(newPassword) || !/[0-9]/.test(newPassword)) {
+      return res.status(400).json({ message: 'Password must be at least 8 characters long and include at least one uppercase letter and one number.' });
+    }
+
     // 새 비밀번호 암호화 및 저장
     const hashedPassword = await bcrypt.hash(newPassword, 10);
     user.password = hashedPassword;
@@ -89,27 +99,15 @@ exports.updateUserPassword = async (req, res) => {
 
 exports.resign = async (req, res) => {
   try {
-    const { email, password, comment } = req.body;
+    const { comment } = req.body;
 
-    // 사용자 조회 (비밀번호 포함)
-    const user = await User.findByPk(req.user.id, {
-      attributes: ['id', 'email', 'password', 'name', 'phoneNumber', 'job', 'createdAt'],
-    });
-
+    // 사용자 조회
+    const user = await User.findByPk(req.user.id);
     if (!user) {
-      return res.status(404).json({ message: 'User not found.' });
+      return res.status(404).json({ message: 'User not found' });
     }
 
-    // 이메일 확인
-    if (user.email !== email) {
-      return res.status(400).json({ message: '이메일을 확인해 주세요.' });
-    }
-
-    // 비밀번호 검증
-    const isPasswordValid = await bcrypt.compare(password, user.password);
-    if (!isPasswordValid) {
-      return res.status(401).json({ message: 'Invalid credentials.' });
-    }
+    const email = user.email;
 
     // 탈퇴 이유 저장
     await ResignComment.create({
