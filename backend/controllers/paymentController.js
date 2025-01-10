@@ -383,3 +383,46 @@ exports.resumeSubscription = async (req, res) => {
         res.status(500).json({ message: 'Failed to resume subscription.' });
     }
 };
+
+// 구독 상태 조회
+exports.getSubscriptionStatus = async (req, res) => {
+    try {
+        const userId = req.user.id; // 로그인한 사용자 ID 가져오기
+
+        // Subscription 테이블에서 해당 사용자의 구독 조회
+        const subscription = await Subscription.findOne({
+            where: { userId },
+            order: [['createdAt', 'DESC']], // 가장 최근 구독을 가져옴
+        });
+
+        if (!subscription) {
+            return res.status(404).json({ message: 'No subscription found for this user.' });
+        }
+
+        const subscription_id = subscription.paymentId; // PayPal 구독 ID 추출
+        const token = await getPayPalToken();
+
+        // PayPal에서 구독 상태 조회
+        const { data } = await axios.get(
+            `${PAYPAL_API}/v1/billing/subscriptions/${subscription_id}`,
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            }
+        );
+
+        // 응답 반환
+        res.json({
+            plan: subscription.plan,
+            localStatus: subscription.status, // 로컬 DB 상태
+            paypalStatus: data.status, // PayPal 상태
+            startDate: subscription.startDate,
+            endDate: subscription.endDate,
+            subscriptionId: subscription_id,
+        });
+    } catch (error) {
+        console.error('Get subscription status error:', error.response?.data || error.message);
+        res.status(500).json({ message: 'Failed to get subscription status.' });
+    }
+};
