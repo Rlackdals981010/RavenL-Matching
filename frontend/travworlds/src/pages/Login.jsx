@@ -4,6 +4,7 @@ import api from "../utils/api"; // Axios 인스턴스 가져오기
 import logo from "../assets/logo1-1.png";
 import showOff from "../assets/show-off.png";
 import showOn from "../assets/show-on.png";
+import { Link,useNavigate } from "react-router-dom"; // useNavigate 가져오기
 
 export default function Login() {
     const [showPassword, setShowPassword] = useState(false);
@@ -12,6 +13,8 @@ export default function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [rememberEmail, setRememberEmail] = useState(false);
+
+    const navigate = useNavigate(); // useNavigate 초기화
 
     useEffect(() => {
         const savedEmail = localStorage.getItem("savedEmail");
@@ -27,7 +30,6 @@ export default function Login() {
         setIsLoading(true);
 
         try {
-            // Axios 인스턴스를 사용하여 요청 보내기
             const response = await api.post("/auth/login", {
                 email,
                 password,
@@ -44,6 +46,9 @@ export default function Login() {
 
             console.log("Login successful:", response.data);
             setIsLoading(false);
+
+            // 로그인 성공 후 페이지 이동 예시
+            navigate("/dashboard"); // 원하는 경로로 이동
         } catch (error) {
             console.error("Login error:", error);
             setIsLoading(false);
@@ -55,6 +60,10 @@ export default function Login() {
                 setMessage("An error occurred during login. Please try again.");
             }
         }
+    };
+
+    const handleForgotPassword = () => {
+        navigate("/auth/forget-password"); // Forget Password 페이지로 이동
     };
 
     return (
@@ -87,9 +96,10 @@ export default function Login() {
                                 className="password-toggle"
                             >
                                 <img
-                                    src={showPassword ? showOff : showOn} // 이미지 경로 설정
+                                    src={showPassword ? showOff : showOn}
                                     alt={showPassword ? "Hide password" : "Show password"}
                                     className="password-toggle-icon"
+                                    style={{ width: "24px", height: "24px" }}
                                 />
                             </button>
                         </div>
@@ -109,7 +119,11 @@ export default function Login() {
                             </label>
                         </div>
                         <div className="forgot-links">
-                            <a href="/auth/forget-password" className="forgot-link">Forget Password</a>
+                            <div className="forgot-links">
+                                <Link to="/auth/forget-password" className="forgot-link">
+                                    Forget Password
+                                </Link> {/* Forget Password를 Link로 변경 */}
+                            </div>
                         </div>
                     </div>
 
