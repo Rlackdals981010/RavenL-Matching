@@ -13,9 +13,9 @@ const router = express.Router();
 router.post('/notice', authMiddleware, createNotice);
 
 // 글 목록 조회
-router.get('/notice', getNotices);
+router.get('/notice', authMiddleware,getNotices);
 // 글 단건 조회
-router.get('/notice/:id', getNotice);
+router.get('/notice/:id', authMiddleware,getNotice);
 
 // 글 수정
 router.patch('/notice/:id',authMiddleware,patchPost)

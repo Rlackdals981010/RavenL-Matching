@@ -1,10 +1,14 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const dotenv = require('dotenv');
+const cors = require("cors"); // CORS 추가
 const app = express();
-app.use(bodyParser.json());
 
 dotenv.config(); // 환경 변수 로드
+
+app.use(cors()); // CORS 미들웨어 추가
+app.use(bodyParser.json());
+
 
 const { sequelize } = require('./config/database');
 

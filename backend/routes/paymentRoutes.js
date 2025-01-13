@@ -20,6 +20,6 @@ router.get('/subscription/success', executeSubscription); // 구독 승인 처�
 router.post('/subscription/cancel', cancelSubscription); // 구독 취소 처리
 router.post('/subscription/pause', authMiddleware, pauseSubscription); // 갱신 중단
 router.post('/subscription/resume', authMiddleware, resumeSubscription); // 구독 재활성화
-router.get('/subscription/status', authMiddleware, getSubscriptionStatus);
+router.get('/subscription/status', authMiddleware, getSubscriptionStatus); // 내 구독 조회
 
 module.exports = router;
