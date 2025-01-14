@@ -62,7 +62,12 @@ export default function Repassword() {
             <div className="login-box">
                 <div className="login-header">
                     <img src={logo} alt="Logo" className="login-logo" />
+                    <div className="forget-password-subtitle">
+                        Forget Password?
+                    </div>
                 </div>
+
+                
 
                 <form className="login-form" onSubmit={(e) => e.preventDefault()}>
                     <div className="input-group">

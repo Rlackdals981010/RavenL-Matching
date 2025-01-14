@@ -4,7 +4,7 @@ import api from "../utils/api"; // Axios 인스턴스 가져오기
 import logo from "../assets/logo1-1.png";
 import showOff from "../assets/show-off.png";
 import showOn from "../assets/show-on.png";
-import { Link,useNavigate } from "react-router-dom"; // useNavigate 가져오기
+import { Link, useNavigate } from "react-router-dom"; // useNavigate 가져오기
 
 export default function Login() {
     const [showPassword, setShowPassword] = useState(false);
@@ -62,9 +62,6 @@ export default function Login() {
         }
     };
 
-    const handleForgotPassword = () => {
-        navigate("/auth/forget-password"); // Forget Password 페이지로 이동
-    };
 
     return (
         <div className="login-container">
@@ -135,9 +132,9 @@ export default function Login() {
 
                     <div className="signup-prompt">
                         Don't have an account?{" "}
-                        <a href="#" className="signup-link">
+                        <Link to="/signup" className="signup-link">
                             Sign up
-                        </a>
+                        </Link>
                     </div>
                 </form>
             </div>
