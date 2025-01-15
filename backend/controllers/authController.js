@@ -29,28 +29,23 @@ const sendVerificationEmail = async (email, code) => {
 // 회원가입
 exports.signup = async (req, res) => {
   try {
-    const { email, password, name, company, position, region, product, job } = req.body;
+    const { email } = req.body;
 
     // 필수 필드 검증
-    if (!email || !password || !name || !job) {
-      return res.status(400).json({ message: 'Missing required fields.' });
+    if (!email) {
+      return res.status(400).json({ message: "Email is required." });
     }
 
     // 이메일 형식 검증
     const isValidEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
     if (!isValidEmail(email)) {
-      return res.status(400).json({ message: 'Invalid email format.' });
-    }
-
-    // 비밀번호 검증 (최소 길이 및 복잡성 체크)
-    if (password.length < 8 || !/[A-Z]/.test(password) || !/[0-9]/.test(password)) {
-      return res.status(400).json({ message: 'Password must be at least 8 characters long and include at least one uppercase letter and one number.' });
+      return res.status(400).json({ message: "Invalid email format." });
     }
 
     // 이메일 중복 확인
     const existingUser = await User.findOne({ where: { email } });
     if (existingUser) {
-      return res.status(400).json({ message: 'Email is already in use.' });
+      return res.status(400).json({ message: "Email is already in use." });
     }
 
     // 기존 Verification 데이터 삭제
@@ -58,25 +53,6 @@ exports.signup = async (req, res) => {
     if (existingVerification) {
       await Verification.destroy({ where: { email } });
     }
-
-    // 기존 TempUser 데이터 삭제
-    const existingTempUser = await TempUser.findOne({ where: { email } });
-    if (existingTempUser) {
-      await TempUser.destroy({ where: { email } });
-    }
-
-    // TempUser 데이터 저장
-    const hashedPassword = await bcrypt.hash(password, 10);
-    await TempUser.create({
-      email,
-      password: hashedPassword,
-      name,
-      company,
-      position,
-      region,
-      product,
-      job,
-    });
 
     // 인증 코드 생성 (6자리 숫자)
     const verificationCode = crypto.randomInt(100000, 999999).toString();
@@ -89,60 +65,67 @@ exports.signup = async (req, res) => {
       expiresAt: Date.now() + 15 * 60 * 1000, // 15분 유효
     });
 
-    res.status(200).json({ message: 'Verification code sent to your email.' });
+    res.status(200).json({ message: "Verification code sent to your email." });
   } catch (error) {
-    console.error('Signup error:', error);
-
-    // 에러 발생 시 TempUser 및 Verification 데이터 삭제
-    if (req.body?.email) {
-      await TempUser.destroy({ where: { email: req.body.email } });
-      await Verification.destroy({ where: { email: req.body.email } });
-    }
-
+    console.error("Signup error:", error);
     res.status(500).json({ error: error.message });
   }
 };
-
 exports.verifyCode = async (req, res) => {
   try {
-    const { code } = req.body;
+    const {  code } = req.body;
 
     // 인증 코드 확인
     const verification = await Verification.findOne({ where: { code } });
     if (!verification || verification.expiresAt < Date.now()) {
-      return res.status(400).json({ message: 'Invalid or expired code.' });
+      return res.status(400).json({ message: "Invalid or expired code." });
     }
 
-    // Verification에서 email 추출
     const email = verification.email;
 
-    // TempUser에서 사용자 데이터 가져오기
-    const tempUser = await TempUser.findOne({ where: { email } });
-    if (!tempUser) {
-      return res.status(400).json({ message: 'No pending registration for this email.' });
+    // Verification 데이터 삭제
+    await Verification.destroy({ where: { email } });
+
+    res.status(200).json({ message: "Verification successful." });
+  } catch (error) {
+    console.error("Verification error:", error);
+    res.status(500).json({ error: error.message });
+  }
+};
+exports.completeSignup = async (req, res) => {
+  try {
+    const { email, password, name, company, position, region, product, job } = req.body;
+
+    // 필수 필드 검증
+    if (!password || !name || !job) {
+      return res.status(400).json({ message: "Missing required fields." });
+    }
+
+    // 비밀번호 검증 (최소 길이 및 복잡성 체크)
+    if (password.length < 8 || !/[A-Z]/.test(password) || !/[0-9]/.test(password)) {
+      return res
+        .status(400)
+        .json({ message: "Password must be at least 8 characters long and include at least one uppercase letter and one number." });
     }
 
     // 실제 사용자 테이블(User)에 데이터 저장
+    const hashedPassword = await bcrypt.hash(password, 10);
     const user = await User.create({
-      email: tempUser.email,
-      password: tempUser.password,
-      name: tempUser.name,
-      company: tempUser.company,
-      position: tempUser.position,
-      region: tempUser.region,
-      product: tempUser.product,
-      role: 'user',
-      job: tempUser.job,
-      state: 'active'
+      email,
+      password: hashedPassword,
+      name,
+      company,
+      position,
+      region,
+      product,
+      role: "user",
+      job,
+      state: "active",
     });
 
-    // TempUser 및 Verification 데이터 삭제
-    await tempUser.destroy();
-    await verification.destroy();
-
-    res.status(201).json({ message: 'User registered successfully', userId: user.id });
+    res.status(201).json({ message: "User registered successfully", userId: user.id });
   } catch (error) {
-    console.error('Verification error:', error);
+    console.error("Complete signup error:", error);
     res.status(500).json({ error: error.message });
   }
 };

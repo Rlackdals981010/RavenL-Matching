@@ -1,13 +1,11 @@
 const express = require('express');
-const { signup,verifyCode, adminSignup,login,requestPasswordReset,resetPassword,setPassword } = require('../controllers/authController');
+const { signup,verifyCode,completeSignup, adminSignup,login,requestPasswordReset,resetPassword,setPassword } = require('../controllers/authController');
 const authMiddleware = require('../middlewares/authMiddleware');
 const router = express.Router();
 
-// 회원가입
-router.post('/signup', signup);
-
-// 인증 코드 확인
-router.post('/verify-code', verifyCode);
+router.post("/signup", signup); // 이메일 및 인증 코드 발송
+router.post("/verify-code", verifyCode); // 인증 코드 확인
+router.post("/complete-signup", completeSignup); // 나머지 정보 저장
 
 // 관리자 회원가입
 router.post('/signup/admin', adminSignup);
