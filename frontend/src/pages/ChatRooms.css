@@ -1,0 +1,42 @@
+.chat-rooms-container {
+    padding: 20px;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  
+  .chat-rooms-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  
+  .chat-rooms-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .chat-room-item {
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .chat-room-item p {
+    margin: 5px 0;
+  }
+  
+  .chat-rooms-error {
+    color: red;
+    text-align: center;
+    margin-top: 20px;
+  }
+  
+  .chat-rooms-empty {
+    text-align: center;
+    color: #555;
+    margin-top: 20px;
+  }
