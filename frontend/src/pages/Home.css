@@ -20,12 +20,31 @@
     font-weight: bold;
 }
 
+/* 기존 로그인 버튼 스타일 수정 */
 .home-login-button {
     padding: 8px 16px;
-    border: 1px solid #e0e0e0;
+    border: 1px solid #1B4BC3; /* 버튼 테두리 색상 */
     border-radius: 4px;
-    background-color: white;
+    background-color: #1B4BC3; /* 배경 색상 */
+    color: white; /* 텍스트 색상 */
     cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.home-login-button:hover {
+    background-color: #1546a0; /* 호버 시 색상 */
+}
+
+/* 마이페이지 버튼 (기존과 동일) */
+.home-mypage-button {
+    padding: 8px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
 }
 
 .home-content {
@@ -44,10 +63,12 @@
 
 .home-sidebar-link {
     display: flex;
-    align-items: center; /* 아이콘과 텍스트 수평 정렬 */
+    align-items: center;
+    /* 아이콘과 텍스트 수평 정렬 */
     text-decoration: none;
     padding: 12px 20px 12px 20px;
-    color: black; /* 기본 텍스트 색상 */
+    color: black;
+    /* 기본 텍스트 색상 */
     transition: color 0.2s;
     font-weight: 600;
 }
@@ -57,13 +78,16 @@
 }
 
 .home-sidebar-link.active {
-    color: #1B4BC3; /* 활성화된 탭 색상 */
+    color: #1B4BC3;
+    /* 활성화된 탭 색상 */
 }
 
 .home-sidebar-icon {
-    width: 24px; /* 아이콘 크기 조절 */
+    width: 24px;
+    /* 아이콘 크기 조절 */
     height: 24px;
-    margin-right: 4px; /* 아이콘과 텍스트 간격 */
+    margin-right: 4px;
+    /* 아이콘과 텍스트 간격 */
 }
 
 .home-sidebar-text {
@@ -72,11 +96,12 @@
 
 .home-main-content {
     flex: 1;
-    background-color: #F7F9FD; /* 하늘색 배경 */
+    background-color: #F7F9FD;
+    /* 하늘색 배경 */
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 20px ;
+    padding: 20px;
 }
 
 .home-content-box {
@@ -87,7 +112,8 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center; /* 콘텐츠를 세로 중앙 정렬 */
+    justify-content: center;
+    /* 콘텐츠를 세로 중앙 정렬 */
     width: 100%;
     max-width: 1200px;
     min-height: 700px;
@@ -96,31 +122,51 @@
 .home-content-title {
     font-size: 48px;
     font-weight: bold;
-    margin-bottom: 0; /* 하단 여백 제거 */
+    margin-bottom: 0;
+    /* 하단 여백 제거 */
 }
 
 .home-content-subtitle {
-    font-size: 28px;
+    font-size: 24px;
     color: #4b5563;
-    margin-top: 0; /* 상단 여백 제거 */
-    margin-bottom: 0; /* 상단 여백 제거 */
+    margin-bottom: 40px;
+    /* 문구와 박스 사이 간격 설정 */
     text-align: center;
-    font-weight: 400;
 }
 
 .home-input-container {
     position: relative;
-    width: 100%;
-    margin-top: 40px; /* 문구와 입력 박스 간 적당한 간격 */
+    width: calc(100% - 80px);
+    /* 양쪽 40px 간격 유지 */
+    margin: 0 auto;
+    /* 중앙 정렬 */
 }
 
 .home-message-input {
     width: 100%;
+    /* 입력 박스 너비를 부모 컨테이너에 맞춤 */
     padding: 16px;
     padding-right: 48px;
+    /* 버튼 여백 */
     border: 1px solid #e0e0e0;
     border-radius: 8px;
     font-size: 18px;
+    box-sizing: border-box;
+    /* 패딩 포함한 너비 계산 */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    /* 입체감을 위한 음영 추가 */
+    background-color: #ffffff;
+    /* 배경색 설정 */
+    transition: box-shadow 0.2s ease-in-out;
+    /* 호버 애니메이션 추가 */
+}
+
+.home-message-input:focus {
+    outline: none;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    /* 포커스 시 음영 강화 */
+    border-color: #3b82f6;
+    /* 포커스 시 테두리 색상 변경 */
 }
 
 .home-send-button {
@@ -131,4 +177,172 @@
     background: none;
     border: none;
     cursor: pointer;
+}
+
+.home-send-icon {
+    width: 20px;
+    /* 이미지 크기 조절 */
+    height: 20px;
+}
+
+.home-logout-button {
+    margin-left: 8px;
+    padding: 8px 16px;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    background-color: white;
+    cursor: pointer;
+}
+
+.home-error-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 16px 24px;
+    border: 2px solid red;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    color: red;
+    font-size: 18px;
+    font-weight: bold;
+    z-index: 1000;
+    text-align: center;
+}
+
+.home-popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.home-popup {
+    background-color: white;
+    padding: 24px 32px;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+
+.home-popup-message {
+    font-size: 18px;
+    font-weight: bold;
+    color: red;
+    margin-bottom: 16px;
+}
+
+.home-popup-login-button {
+    padding: 12px 24px;
+    background-color: #3b82f6;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.home-popup-login-button:hover {
+    background-color: #2563eb;
+}
+
+.mypage-popup {
+    position: absolute;
+    top: 58px;
+    right: 16px;
+    width: 200px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    font-size: 14px;
+}
+
+.mypage-header {
+    display: flex;
+    align-items: center;
+    padding: 16px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.mypage-profile-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 12px;
+}
+
+.mypage-name {
+    font-weight: bold;
+    margin: 0;
+}
+
+.mypage-email {
+    margin: 0;
+    color: #6b7280;
+    font-size: 12px;
+}
+
+.mypage-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.mypage-item {
+    padding: 10px 12px 10px 12px;
+    cursor: pointer;
+    transition: background 0.2s;
+    font-size: 12px;
+}
+
+.mypage-item:hover {
+    background: #f3f4f6;
+}
+
+/* MyPage 버튼 아이콘 스타일 */
+.mypage-icon {
+    width: 32px;
+    /* 아이콘 크기 */
+    height: 32px;
+    border-radius: 50%;
+    /* 원형 모양 */
+    border: none;
+    /* 테두리 제거 */
+    box-shadow: none;
+    /* 그림자 제거 */
+}
+
+/* MyPage 팝업 프로필 아이콘 스타일 */
+.mypage-profile-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    /* 원형 모양 */
+    border: none;
+    /* 테두리 제거 */
+    box-shadow: none;
+    /* 그림자 제거 */
+    margin-right: 12px;
+}
+
+.mypage-button {
+    background: none;
+    /* 배경 제거 */
+    border: none;
+    /* 테두리 제거 */
+    box-shadow: none;
+    /* 그림자 제거 */
+    padding: 0;
+    /* 여백 제거 */
+    margin: 0;
+    /* 여백 제거 */
 }

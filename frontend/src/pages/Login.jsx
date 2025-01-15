@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import "./Login.css";
 import api from "../utils/api"; // Axios 인스턴스 가져오기
 import logo from "../assets/logo1-1.png";
@@ -36,7 +36,9 @@ export default function Login() {
             });
 
             setMessage(response.data.message || "Login successful!");
-            localStorage.setItem("token", response.data.token);
+
+            // JWT 토큰 저장
+            localStorage.setItem("jwtToken", response.data.token);
 
             if (rememberEmail) {
                 localStorage.setItem("savedEmail", email);
@@ -47,8 +49,8 @@ export default function Login() {
             console.log("Login successful:", response.data);
             setIsLoading(false);
 
-            // 로그인 성공 후 페이지 이동 예시
-            navigate("/dashboard"); // 원하는 경로로 이동
+            // 로그인 성공 후 메인 페이지로 이동
+            navigate("/");
         } catch (error) {
             console.error("Login error:", error);
             setIsLoading(false);
@@ -61,7 +63,6 @@ export default function Login() {
             }
         }
     };
-
 
     return (
         <div className="login-container">
@@ -119,7 +120,7 @@ export default function Login() {
                             <div className="forgot-links">
                                 <Link to="/auth/forget-password" className="forgot-link">
                                     Forget Password
-                                </Link> {/* Forget Password를 Link로 변경 */}
+                                </Link>
                             </div>
                         </div>
                     </div>
