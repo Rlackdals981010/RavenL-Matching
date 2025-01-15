@@ -1,0 +1,134 @@
+.home-container {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.home-header {
+    height: 56px;
+    border-bottom: 1px solid #e0e0e0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 16px;
+    background-color: white;
+}
+
+.home-logo {
+    color: #1B4BC3;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.home-login-button {
+    padding: 8px 16px;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    background-color: white;
+    cursor: pointer;
+}
+
+.home-content {
+    display: flex;
+    flex: 1;
+}
+
+.home-sidebar {
+    width: 120px;
+    border-right: 1px solid #e0e0e0;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    padding: 40px 0;
+}
+
+.home-sidebar-link {
+    display: flex;
+    align-items: center; /* 아이콘과 텍스트 수평 정렬 */
+    text-decoration: none;
+    padding: 12px 20px 12px 20px;
+    color: black; /* 기본 텍스트 색상 */
+    transition: color 0.2s;
+    font-weight: 600;
+}
+
+.home-sidebar-link:hover {
+    background-color: #f0f0f0;
+}
+
+.home-sidebar-link.active {
+    color: #1B4BC3; /* 활성화된 탭 색상 */
+}
+
+.home-sidebar-icon {
+    width: 24px; /* 아이콘 크기 조절 */
+    height: 24px;
+    margin-right: 4px; /* 아이콘과 텍스트 간격 */
+}
+
+.home-sidebar-text {
+    font-size: 14px;
+}
+
+.home-main-content {
+    flex: 1;
+    background-color: #F7F9FD; /* 하늘색 배경 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px ;
+}
+
+.home-content-box {
+    background-color: white;
+    padding: 48px;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center; /* 콘텐츠를 세로 중앙 정렬 */
+    width: 100%;
+    max-width: 1200px;
+    min-height: 700px;
+}
+
+.home-content-title {
+    font-size: 48px;
+    font-weight: bold;
+    margin-bottom: 0; /* 하단 여백 제거 */
+}
+
+.home-content-subtitle {
+    font-size: 28px;
+    color: #4b5563;
+    margin-top: 0; /* 상단 여백 제거 */
+    margin-bottom: 0; /* 상단 여백 제거 */
+    text-align: center;
+    font-weight: 400;
+}
+
+.home-input-container {
+    position: relative;
+    width: 100%;
+    margin-top: 40px; /* 문구와 입력 박스 간 적당한 간격 */
+}
+
+.home-message-input {
+    width: 100%;
+    padding: 16px;
+    padding-right: 48px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 18px;
+}
+
+.home-send-button {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+}

@@ -28,7 +28,7 @@ export default function NewPassword() {
 
         try {
             const token = localStorage.getItem("token"); // JWT 토큰 가져오기
-            const response = await api.post(
+            await api.post(
                 "/auth/re-password/new",
                 { newPassword },
                 {
