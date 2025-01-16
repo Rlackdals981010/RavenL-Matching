@@ -1,15 +1,26 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const chatController = require('../controllers/chatController');
-const authMiddleware = require('../middlewares/authMiddleware'); // JWT 인증 미들웨어
+const jwt = require("jsonwebtoken");
+const Message = require("../models/chatMessage");
 
-// 1. 로그인한 사용자의 채팅방 리스트 조회
-router.get('/rooms', authMiddleware, chatController.getUserChatRooms);
+// 현재 사용자가 속한 모든 채팅방 조회
+router.get("/rooms", async (req, res) => {
+  const token = req.headers.authorization?.split(" ")[1];
+  if (!token) return res.status(401).json({ error: "Unauthorized" });
 
-// 2. 특정 채팅방의 메시지 내역 조회
-router.get('/rooms/:roomId/messages', authMiddleware, chatController.getChatMessages);
+  try {
+    const user = jwt.verify(token, process.env.JWT_SECRET);
 
-// 3. 새 채팅방 생성
-router.post('/rooms', authMiddleware, chatController.createChatRoom);
+    // 현재 사용자가 속한 방(roomId)을 MongoDB에서 조회
+    const rooms = await Message.find({
+      $or: [{ roomId: { $regex: `^${user.id}-` } }, { roomId: { $regex: `-${user.id}$` } }],
+    })
+      .distinct("roomId"); // roomId의 중복 제거
+
+    res.json(rooms); // 방 목록 반환
+  } catch (err) {
+    res.status(401).json({ error: "Invalid token" });
+  }
+});
 
 module.exports = router;

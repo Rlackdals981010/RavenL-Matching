@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const dotenv = require('dotenv');
 const cors = require("cors"); // CORS 추가
 const app = express();
+const mongoose = require('mongoose'); // mongoose 추가
 
 dotenv.config(); // 환경 변수 로드
 
@@ -17,18 +18,15 @@ const authRoutes = require('./routes/authRoutes');
 const userRoutes = require('./routes/userRoutes');
 const postRoutes = require('./routes/postRoutes');
 const searchRoutes = require('./routes/searchRoutes');
-const testRoutes = require('./routes/testRoutes');
 const paymentRoutes = require('./routes/paymentRoutes');
-const chatRoutes = require('./routes/chatRoutes');
-
+const chatRoutes = require("./routes/chatRoutes");
 
 app.use('/auth', authRoutes);
 app.use('/mypage', userRoutes);
 app.use('/', postRoutes);
 app.use('/search', searchRoutes);
-app.use('/test',testRoutes);
-app.use('/payment',paymentRoutes);
-app.use('/chat',chatRoutes);
+app.use('/payment', paymentRoutes);
+app.use("/chat", chatRoutes);
 
 // 데이터베이스 연결
 sequelize.authenticate()
@@ -37,6 +35,14 @@ sequelize.authenticate()
     return sequelize.sync(); // DB 동기화
   })
   .catch(err => console.error('Unable to connect to the database:', err));
+
+
+mongoose.connect(process.env.MONGO_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+})
+  .then(() => console.log('MongoDB connected successfully.'))
+  .catch(err => console.error('MongoDB connection error:', err));
 
 // 서버 실행
 const PORT = process.env.PORT || 5000;

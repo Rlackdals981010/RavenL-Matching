@@ -169,6 +169,10 @@ exports.adminSignup = async (req, res) => {
 // 로그인
 exports.login = async (req, res) => {
   try {
+    res.set("Cache-Control", "no-store, no-cache, must-revalidate, proxy-revalidate");
+    res.set("Pragma", "no-cache");
+    res.set("Expires", "0");
+
     const { email, password } = req.body;
 
     // 입력 데이터 검증
@@ -198,7 +202,8 @@ exports.login = async (req, res) => {
       process.env.JWT_SECRET,
       { expiresIn: '1h' }
     );
-
+    const tokenPayload = JSON.parse(atob(token.split(".")[1]));
+    
     // 응답
     res.status(200).json({
       message: 'Login successful',
