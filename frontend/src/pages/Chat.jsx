@@ -1,20 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
 import socket from "../server";
+import "./Chat.css";
 
-const Chat = () => {
-  const { roomId } = useParams(); // URL에서 roomId 가져오기
+const Chat = ({ roomId }) => {
   const [message, setMessage] = useState("");
   const [chat, setChat] = useState([]);
 
   useEffect(() => {
-    // 방 참여 요청
     socket.emit("joinRoom", roomId, (response) => {
       if (response.success) {
-        console.log(`Joined room: ${roomId}`);
-        setChat(response.messages); // 이전 메시지 로드
-      } else {
-        console.error("Failed to join room:", response.error);
+        setChat(response.messages);
       }
     });
 
@@ -41,23 +36,29 @@ const Chat = () => {
   };
 
   return (
-    <div>
-      <h1>Chat Room: {roomId}</h1>
-      <div>
+    <div className="chat-room-container">
+      <div className="chat-room-header">
+        <h2>Room: {roomId}</h2>
+      </div>
+      <div className="chat-messages">
         {chat.map((msg, index) => (
-          <div key={index}>
-            <strong>{msg.senderId}: </strong>
-            {msg.message}
+          <div key={index} className="chat-message">
+            <strong>{msg.senderId}:</strong> {msg.message}
           </div>
         ))}
       </div>
-      <input
-        type="text"
-        value={message}
-        onChange={(e) => setMessage(e.target.value)}
-        placeholder="Enter your message"
-      />
-      <button onClick={sendMessage}>Send</button>
+      <div className="chat-input-container">
+        <input
+          type="text"
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+          className="chat-input"
+          placeholder="메시지를 입력하세요..."
+        />
+        <button onClick={sendMessage} className="chat-send-button">
+          Send
+        </button>
+      </div>
     </div>
   );
 };

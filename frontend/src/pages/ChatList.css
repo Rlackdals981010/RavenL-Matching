@@ -1,44 +1,45 @@
 .chat-list-container {
-    padding: 20px;
-    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+    height: 100vh;
+    border-right: 1px solid #e0e0e0;
+    background-color: white;
 }
 
-h1 {
-    color: #333;
-    font-size: 24px;
-    margin-bottom: 20px;
-    text-align: center;
+.chat-header {
+    padding: 16px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.chat-search {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
 }
 
 .room-list {
     list-style: none;
     padding: 0;
     margin: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    overflow-y: auto;
+    flex: 1;
 }
 
 .room-item {
-    padding: 10px 15px;
-    margin: 10px 0;
-    width: 80%;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    background-color: #f9f9f9;
+    padding: 16px;
+    border-bottom: 1px solid #f0f0f0;
     cursor: pointer;
-    transition: background-color 0.3s ease, box-shadow 0.3s ease;
-    text-align: center;
-    font-size: 16px;
+    transition: background-color 0.2s ease-in-out;
 }
 
 .room-item:hover {
-    background-color: #e0e0e0;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    background-color: #f9f9f9;
 }
 
-p {
-    color: #666;
-    font-size: 14px;
+.no-rooms {
+    padding: 16px;
     text-align: center;
+    color: #666;
 }

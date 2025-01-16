@@ -82,9 +82,11 @@ module.exports = function (io) {
         });
 
         // 메시지 전송
-        socket.on("sendMessage", async (data, callback) => {
+        socket.on("sendMessage", async (data, callback = () => { }) => {
             const { roomId, message } = data;
+
             try {
+                // 메시지 저장
                 const newMessage = new Message({
                     roomId,
                     senderId: socket.user.id,
@@ -92,14 +94,15 @@ module.exports = function (io) {
                 });
                 await newMessage.save();
 
-                // 메시지 브로드캐스트
+                // 메시지 전송
                 io.to(roomId).emit("receiveMessage", {
                     roomId,
                     senderId: socket.user.id,
                     message,
-                    timestamp: newMessage.timestamp,
+                    timestamp: newMessage.createdAt,
                 });
 
+                // 콜백 성공 응답
                 callback({ success: true });
             } catch (error) {
                 console.error("Message sending error:", error);
