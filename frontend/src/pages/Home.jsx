@@ -19,7 +19,7 @@ const HomePage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const token = localStorage.getItem("jwtToken");
+    const token = localStorage.getItem("token");
     if (token) {
       setIsLoggedIn(true);
       const parsedToken = parseJWT(token); // JWT 파싱
@@ -45,7 +45,7 @@ const HomePage = () => {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem("jwtToken");
+    localStorage.removeItem("token");
     setIsLoggedIn(false);
     setShowMyPagePopup(false);
   };

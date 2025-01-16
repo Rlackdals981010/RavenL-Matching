@@ -37,9 +37,11 @@ export default function Login() {
 
             setMessage(response.data.message || "Login successful!");
 
+            
+            localStorage.removeItem("token");
             // JWT 토큰 저장
-            localStorage.setItem("jwtToken", response.data.token);
-
+            localStorage.setItem("token", response.data.token);
+            
             if (rememberEmail) {
                 localStorage.setItem("savedEmail", email);
             } else {

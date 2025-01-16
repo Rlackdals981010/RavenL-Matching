@@ -5,9 +5,7 @@ import Login from "./pages/Login";
 import RePassword from "./pages/Repassword";
 import NewPassword from "./pages/Newpassword";
 import Signup from "./pages/Signup";
-import ChatRooms from "./pages/ChatRooms";
-import ChatRoom from "./pages/ChatRoom";
-
+import Chat from "./pages/Chat"; // Chat 컴포넌트 추가
 
 const App = () => {
   return (
@@ -18,8 +16,7 @@ const App = () => {
         <Route path="/auth/forget-password" element={<RePassword />} /> {/* 코드 발급 페이지 */}
         <Route path="/auth/re-password/new" element={<NewPassword />} /> {/* 비번 변경 페이지 */}
         <Route path="/signup" element={<Signup />} /> {/* 회원가입 페이지 */}
-        <Route path="/chat" element={<ChatRooms />} />
-        <Route path="/chat/rooms/:roomId" element={<ChatRoom />} />
+        <Route path="/chat" element={<Chat />} />  {/* 채팅 화면 */}
       </Routes>
     </Router>
   );
