@@ -2,6 +2,7 @@
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    
 }
 
 .home-header {
@@ -50,15 +51,17 @@
 .home-content {
     display: flex;
     flex: 1;
+    gap: 0; /* 간격 제거 */
 }
 
 .home-sidebar {
-    width: 120px;
+    width: 110px;
     border-right: 1px solid #e0e0e0;
     background-color: white;
     display: flex;
     flex-direction: column;
-    padding: 40px 0;
+    padding: 40px 0 ;
+    margin: 0; /* 외부 간격 제거 */
 }
 
 .home-sidebar-link {

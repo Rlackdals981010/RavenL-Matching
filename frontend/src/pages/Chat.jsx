@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import socket from "../server";
 import "./Chat.css";
+import chatPersion from "../assets/chat-person.png"; // 프로필 아이콘
 
 const Chat = ({ roomId }) => {
   const [message, setMessage] = useState("");
@@ -55,24 +56,46 @@ const Chat = ({ roomId }) => {
 
   return (
     <div className="chat-room-container">
-      <div className="chat-room-header">
-        <h2>Room: {roomId}</h2>
-      </div>
       <div className="chat-messages" ref={chatContainerRef}>
         {chat.map((msg, index) => (
           <div
             key={index}
-            className={`chat-message ${
-              String(msg.senderId) === String(userId)
-                ? "chat-message-right"
-                : "chat-message-left"
-            }`}
+            className={`chat-message ${String(msg.senderId) === String(userId)
+              ? "chat-message-right"
+              : "chat-message-left"
+              }`}
           >
-            <div className="chat-bubble">
-              <strong>
-                {String(msg.senderId) === String(userId) ? "You" : msg.senderId}
-              </strong>
-              <p>{msg.message}</p>
+            {String(msg.senderId) !== String(userId) && (
+              <div className="chat-profile">
+                <img
+                  src={chatPersion}
+                  alt="Profile"
+                  className="chat-profile-icon"
+                />
+              </div>
+            )}
+            <div className="chat-bubble-container">
+              {String(msg.senderId) !== String(userId) && (
+                <strong className="chat-sender-name">
+                  {msg.senderName || "Name"}
+                </strong>
+              )}
+              <div
+                className={`chat-row ${String(msg.senderId) === String(userId)
+                    ? "chat-row-right"
+                    : "chat-row-left"
+                  }`}
+              >
+                <div className="chat-bubble">
+                  <p>{msg.message}</p>
+                </div>
+                <div className="chat-time">
+                  {new Date(msg.timestamp).toLocaleTimeString([], {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })}
+                </div>
+              </div>
             </div>
           </div>
         ))}

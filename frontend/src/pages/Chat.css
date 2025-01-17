@@ -1,79 +1,167 @@
+:root {
+    --bubble-padding: 6px 8px; /* 말풍선의 공통 padding */
+    --bubble-margin-top: 4px; /* 말풍선 위 여백 */
+    --time-margin: 4px; /* 시간과 말풍선 간 간격 */
+    --font-size-small: 12px; /* 작은 텍스트 크기 */
+    --profile-size: 32px; /* 프로필 이미지 크기 */
+}
+
+/* 대화방 전체 컨테이너 */
 .chat-room-container {
     display: flex;
     flex-direction: column;
-    height: 100vh;
-    background-color: #f7f9fd;
+    height: 94vh; /* 화면 전체 높이에 맞춤 */
+    margin-left: 0; /* 사이드바와 딱 붙도록 여백 제거 */
 }
 
-.chat-room-header {
-    padding: 16px;
-    border-bottom: 1px solid #e0e0e0;
-    background-color: white;
-}
-
+/* 채팅 메시지 영역 */
 .chat-messages {
     flex: 1;
-    padding: 16px;
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+    overflow-y: auto; /* 채팅 메시지 스크롤 */
+    padding: 10px 20px;
+    background-color: #f9f9f9;
 }
 
+/* 메시지 정렬 */
 .chat-message {
     display: flex;
-    max-width: 60%;
-    word-wrap: break-word;
+    align-items: flex-start;
+    margin-bottom: 20px;
 }
 
 .chat-message-left {
-    justify-content: flex-start;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    
 }
 
 .chat-message-right {
     justify-content: flex-end;
+    margin-right: 20px; /* 오른쪽 공백을 일정하게 조정 */
 }
 
+/* 말풍선 스타일 */
 .chat-bubble {
-    padding: 10px 16px;
-    border-radius: 15px;
-    background-color: #e0e0e0;
-    color: #333;
-    position: relative;
-    max-width: 100%;
+    font-size: 14px;
+    border-radius: 4px;
+    max-width: 60%;
     word-wrap: break-word;
+    overflow-wrap: break-word;
+    padding: 8px 10px;
+    
 }
 
+.chat-bubble p {
+    margin: 0; /* 상하 마진 제거 */
+    padding: 0; /* 불필요한 여백 제거 */
+}
+
+/* 왼쪽 말풍선 스타일 */
+.chat-message-left .chat-bubble {
+    background-color: #FFFFFF; /* 밝은 회색 */
+    color: #000; /* 텍스트 색상 */
+    border: 1px solid #B7C9F5; /* 테두리 색상 */
+    margin-top : 8px;
+}
+
+/* 오른쪽 말풍선 스타일 */
 .chat-message-right .chat-bubble {
-    background-color: #1b4bc3;
-    color: white;
+    background-color: #B7C9F5; /* 파란색 */
+    color: #000; /* 텍스트 색상 */
+    border: none; /* 테두리 제거 */
 }
 
+/* 공통 스타일 */
+.chat-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0;
+}
+
+/* 왼쪽 메시지: 시간 우측 */
+.chat-row-left {
+    flex-direction: row;
+}
+
+/* 오른쪽 메시지: 시간 좌측 */
+.chat-row-right {
+    flex-direction: row-reverse; /* 시간과 말풍선을 반대로 배치 */
+    justify-content: 0px;
+    align-items: center;
+    margin-right: 0px;
+}
+
+/* 시간 */
+.chat-time {
+    font-size: var(--font-size-small);
+    color: #888;
+}
+
+/* 왼쪽 메시지 시간 스타일 */
+.chat-row-left .chat-time {
+    margin-left: var(--time-margin);
+    align-self: flex-end;
+}
+
+/* 오른쪽 메시지 시간 스타일 */
+.chat-row-right .chat-time {
+    margin-right: var(--time-margin);
+    align-self: flex-end;
+}
+
+/* 프로필 */
+.chat-profile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.chat-profile-icon {
+    width: var(--profile-size);
+    height: var(--profile-size);
+    border-radius: 50%;
+}
+
+/* 이름 스타일 */
+.chat-sender-name {
+    font-size: 14px; /* 이름 텍스트 크기 */
+    font-weight: bold;
+    color: #333; /* 텍스트 색상 */
+    margin-bottom: 10000px; /* 메시지 박스와의 간격 */
+    text-align: left; /* 이름 정렬 */
+}
+
+/* 채팅 입력창 - 화면 하단에 고정 */
 .chat-input-container {
     display: flex;
-    padding: 16px;
-    border-top: 1px solid #e0e0e0;
-    background-color: white;
+    align-items: center;
+    border-top: 1px solid #ddd;
+    background-color: #fff;
+    position: sticky; /* 화면 하단에 고정 */
+    bottom: 0;
+    padding: 10px 20px;
+    z-index: 10; /* 다른 요소 위에 표시되도록 설정 */
 }
 
 .chat-input {
     flex: 1;
-    padding: 8px;
+    padding: 10px;
     border: 1px solid #ddd;
-    border-radius: 8px;
+    border-radius: 20px;
+    margin-right: 10px;
 }
 
 .chat-send-button {
-    padding: 8px 16px;
-    margin-left: 8px;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
     border: none;
-    background-color: #1b4bc3;
-    color: white;
+    border-radius: 20px;
     cursor: pointer;
-    border-radius: 8px;
-    transition: background-color 0.2s ease-in-out;
 }
 
 .chat-send-button:hover {
-    background-color: #1546a0;
+    background-color: #0056b3;
 }

@@ -3,44 +3,38 @@ import "./ChatList.css";
 
 const ChatList = ({ onRoomSelect }) => {
   const [rooms, setRooms] = useState([]);
+  const [selectedRoomId, setSelectedRoomId] = useState(null);
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
+    // Fetch chat rooms from the backend
     fetch("http://localhost:5001/chat/rooms", {
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
     })
-      .then((res) => res.json())
-      .then((data) => {
-        setRooms(data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)));
-      })
-      .catch((err) => console.error("Failed to fetch rooms:", err));
+      .then((response) => response.json())
+      .then((data) => setRooms(data))
+      .catch((error) => console.error("Error fetching chat rooms:", error));
   }, []);
+
+  const handleRoomClick = (roomId) => {
+    setSelectedRoomId(roomId); // 선택된 방 ID 설정
+    onRoomSelect(roomId); // 부모 컴포넌트에 전달
+  };
 
   return (
     <div className="chat-list-container">
-      <div className="chat-header">
-        <h2>Chat</h2>
-        <input
-          type="text"
-          className="chat-search"
-          placeholder="검색 대상"
-        />
-      </div>
-      <ul className="room-list">
+      <h3>Chat</h3>
+      <ul className="chat-list">
         {rooms.map((room) => (
           <li
-            key={room._id}
-            className="room-item"
-            onClick={() => onRoomSelect(room.roomId)} // 선택된 방 ID 전달
+            key={room.roomId}
+            className={`chat-list-item ${
+              selectedRoomId === room.roomId ? "selected" : ""
+            }`}
+            onClick={() => handleRoomClick(room.roomId)}
           >
-            <div className="room-info">
-              <div className="room-name">Room: {room.roomId}</div>
-              <div className="room-last-message">
-                {room.participants.join(", ")}
-              </div>
-            </div>
+            Room: {room.roomId}
           </li>
         ))}
       </ul>
