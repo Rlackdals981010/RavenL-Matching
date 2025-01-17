@@ -8,7 +8,7 @@
 }
 
 .chat-list-container {
-    width: 20%; /* 채팅방 리스트 너비 */
+    width: 343px; /* 고정 너비로 변경 */
     border-right: 1px solid #e0e0e0;
     background-color: white;
     overflow-y: auto; /* 리스트 스크롤 가능 */
@@ -41,3 +41,4 @@
     padding: 0; /* 여백 제거 */
     background-color: #f5f7fa;
 }
+

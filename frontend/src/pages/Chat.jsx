@@ -75,11 +75,7 @@ const Chat = ({ roomId }) => {
               </div>
             )}
             <div className="chat-bubble-container">
-              {String(msg.senderId) !== String(userId) && (
-                <strong className="chat-sender-name">
-                  {msg.senderName || "Name"}
-                </strong>
-              )}
+
               <div
                 className={`chat-row ${String(msg.senderId) === String(userId)
                     ? "chat-row-right"
