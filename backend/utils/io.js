@@ -73,7 +73,22 @@ module.exports = function (io) {
                 console.log(`User ${socket.user.id} joined room ${roomId}`);
 
                 // 메시지 기록 조회
-                const messages = await Message.find({ roomId }).sort({ timestamp: 1 }); // 시간 순서 정렬
+                const messages = await Message.find({ roomId }).sort({ timestamp: 1 });
+
+                // 읽지 않은 메시지 개수 계산
+                const unreadMessages = messages.filter(
+                    (msg) => msg.senderId !== socket.user.id && !msg.read
+                );
+                console.log(
+                    `Room ${roomId}: User ${socket.user.id} has ${unreadMessages.length} unread messages.`
+                );
+
+                // 읽지 않은 메시지 읽음 처리
+                await Message.updateMany(
+                    { roomId, senderId: { $ne: socket.user.id }, read: false },
+                    { $set: { read: true } }
+                );
+
                 callback({ success: true, roomId, messages }); // 메시지 포함하여 클라이언트로 반환
             } catch (error) {
                 console.error("Join room error:", error);
