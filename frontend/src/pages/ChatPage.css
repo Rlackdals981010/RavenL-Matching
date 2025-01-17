@@ -1,7 +1,8 @@
 .chat-page-container {
     display: flex;
-    height: 100vh;
+    height: 100%;
     background-color: #f5f7fa;
+    width: 100%;
 }
 
 .chat-list-container {
