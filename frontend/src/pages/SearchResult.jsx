@@ -1,66 +1,65 @@
-import React, { useState, useEffect } from "react"
-import { useLocation, useNavigate } from "react-router-dom"
-import "./Home.css"
-import "./SearchResult.css"
-import homeOn from "../assets/home-on.png"
-import homeOff from "../assets/home-off.png"
-import chatOn from "../assets/chat-on.png"
-import chatOff from "../assets/chat-off.png"
-import mypageIcon from "../assets/mypage.png"
-import { parseJWT } from "../utils/jwt" // parseJWT 가져오기
+import React, { useState, useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import "./Home.css";
+import "./SearchResult.css";
+import homeOn from "../assets/home-on.png";
+import homeOff from "../assets/home-off.png";
+import chatOn from "../assets/chat-on.png";
+import chatOff from "../assets/chat-off.png";
+import mypageIcon from "../assets/mypage.png";
+import { parseJWT } from "../utils/jwt";
 
 const SearchResultPage = () => {
-  const [activeTab, setActiveTab] = useState("home")
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
-  const [userInfo, setUserInfo] = useState({ name: "", email: "" })
-  const [showMyPagePopup, setShowMyPagePopup] = useState(false)
-  const [currentPage, setCurrentPage] = useState(1)
-  const contactsPerPage = 10 // 한 페이지에 표시할 컨택 수
-  const navigate = useNavigate()
-  const location = useLocation()
+  const [activeTab, setActiveTab] = useState("home");
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userInfo, setUserInfo] = useState({ name: "", email: "" });
+  const [showMyPagePopup, setShowMyPagePopup] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const contactsPerPage = 10; // 한 페이지에 표시할 검색 결과 수
+  const navigate = useNavigate();
+  const location = useLocation();
 
   // 전달된 데이터
-  const contacts = location.state?.results || [] // Home.jsx에서 전달된 검색 결과
-  const totalContacts = contacts.length // 전체 컨택 수
+  const results = location.state?.results || []; // SearchResult 데이터를 Home.jsx에서 전달받음
+  const totalResults = results.length; // 전체 검색 결과 수
 
   useEffect(() => {
-    const token = localStorage.getItem("token")
+    const token = localStorage.getItem("token");
     if (token) {
-      setIsLoggedIn(true)
-      // 사용자 정보 가져오기
-      const parsedToken = parseJWT(token)
+      setIsLoggedIn(true);
+      const parsedToken = parseJWT(token);
       setUserInfo({
         name: parsedToken?.name || "Unknown",
         email: parsedToken?.email || "No Email",
-      })
+      });
     }
-  }, [])
+  }, []);
 
   // 현재 페이지에 해당하는 데이터 계산
-  const startIndex = (currentPage - 1) * contactsPerPage
-  const endIndex = startIndex + contactsPerPage
-  const currentContacts = contacts.slice(startIndex, endIndex)
+  const startIndex = (currentPage - 1) * contactsPerPage;
+  const endIndex = startIndex + contactsPerPage;
+  const currentResults = results.slice(startIndex, endIndex);
 
-  const totalPages = Math.ceil(totalContacts / contactsPerPage)
+  const totalPages = Math.ceil(totalResults / contactsPerPage);
 
   const handleTabClick = (tab) => {
-    setActiveTab(tab)
-    if (tab === "home") navigate("/")
-    else if (tab === "chat") navigate("/chat")
-  }
+    setActiveTab(tab);
+    if (tab === "home") navigate("/");
+    else if (tab === "chat") navigate("/chat");
+  };
 
-  const handleMyPageClick = () => setShowMyPagePopup(!showMyPagePopup)
+  const handleMyPageClick = () => setShowMyPagePopup(!showMyPagePopup);
 
   const handleLogout = () => {
-    localStorage.removeItem("token")
-    setIsLoggedIn(false)
-    setShowMyPagePopup(false)
-    navigate("/")
-  }
+    localStorage.removeItem("token");
+    setIsLoggedIn(false);
+    setShowMyPagePopup(false);
+    navigate("/");
+  };
 
   const handlePageChange = (pageNumber) => {
-    setCurrentPage(pageNumber)
-  }
+    setCurrentPage(pageNumber);
+  };
 
   return (
     <div className="home-container">
@@ -102,40 +101,41 @@ const SearchResultPage = () => {
         {/* Main Content */}
         <div className="research-main-content">
           <h2 className="research-content-title">
-            Contact <span>{totalContacts}</span>
+            Results <span>{totalResults}</span>
           </h2>
           <div className="research-content-box">
             {/* 테이블 구조 */}
             <table>
               <thead>
                 <tr>
-                  <th>Name / Job Title</th>
-                  <th>Company</th>
-                  <th>Location</th>
-                  <th>Product</th>
-                  <th>Email</th>
-                  <th>컨택수</th>
-                  <th>Action</th>
+                  <th>Product Name</th>
+                  <th>Brand Product</th>
+                  <th>Product URL</th>
+                  <th>Category 1</th>
+                  <th>Category 2</th>
+                  <th>Category 3</th>
+                  <th>Description</th>
                 </tr>
               </thead>
               <tbody className="research-results">
-                {totalContacts > 0 ? (
-                  currentContacts.map((contact, i) => (
+                {totalResults > 0 ? (
+                  currentResults.map((result, i) => (
                     <tr key={i}>
+                      <td>{result.productName || "N/A"}</td>
+                      <td>{result.brandProduct || "N/A"}</td>
                       <td>
-                        <div className="name-position">
-                          <div>{contact.name}</div>
-                          <div className="position">{contact.position}</div>
-                        </div>
+                        {result.productUrl ? (
+                          <a href={result.productUrl} target="_blank" rel="noopener noreferrer">
+                            Link
+                          </a>
+                        ) : (
+                          "N/A"
+                        )}
                       </td>
-                      <td>{contact.company}</td>
-                      <td>{contact.region}</td>
-                      <td>{contact.product}</td>
-                      <td>{contact.email}</td>
-                      <td>{contact.score}</td>
-                      <td>
-                        <button className="chatting-button">Chatting</button>
-                      </td>
+                      <td>{result.category1 || "N/A"}</td>
+                      <td>{result.category2 || "N/A"}</td>
+                      <td>{result.category3 || "N/A"}</td>
+                      <td>{result.description || "N/A"}</td>
                     </tr>
                   ))
                 ) : (
@@ -149,7 +149,7 @@ const SearchResultPage = () => {
             </table>
 
             {/* 페이지네이션 */}
-            {totalContacts > 0 && (
+            {totalResults > 0 && (
               <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange} />
             )}
           </div>
@@ -177,24 +177,60 @@ const SearchResultPage = () => {
         </div>
       )}
     </div>
-  )
-}
+  );
+};
 
-const Pagination = ({ currentPage, totalPages, onPageChange }) => (
-  <div className="pagination">
-    <button onClick={() => onPageChange(currentPage - 1)} disabled={currentPage === 1}>
-      Previous
-    </button>
-    {Array.from({ length: totalPages }, (_, index) => (
-      <button key={index} className={currentPage === index + 1 ? "active" : ""} onClick={() => onPageChange(index + 1)}>
-        {index + 1}
+const Pagination = ({ currentPage, totalPages, onPageChange }) => {
+  const renderPageNumbers = () => {
+    const pageNumbers = [];
+
+    // 항상 첫 페이지 번호 표시
+    if (currentPage > 3) {
+      pageNumbers.push(
+        <button key={1} onClick={() => onPageChange(1)} className={currentPage === 1 ? "active" : ""}>
+          1
+        </button>
+      );
+      if (currentPage > 4) pageNumbers.push(<span key="start-ellipsis">...</span>);
+    }
+
+    // 현재 페이지를 중심으로 -2 ~ +2 범위의 페이지 번호 표시
+    for (let i = Math.max(1, currentPage - 2); i <= Math.min(totalPages, currentPage + 2); i++) {
+      pageNumbers.push(
+        <button
+          key={i}
+          className={currentPage === i ? "active" : ""}
+          onClick={() => onPageChange(i)}
+        >
+          {i}
+        </button>
+      );
+    }
+
+    // 항상 마지막 페이지 번호 표시
+    if (currentPage < totalPages - 2) {
+      if (currentPage < totalPages - 3) pageNumbers.push(<span key="end-ellipsis">...</span>);
+      pageNumbers.push(
+        <button key={totalPages} onClick={() => onPageChange(totalPages)} className={currentPage === totalPages ? "active" : ""}>
+          {totalPages}
+        </button>
+      );
+    }
+
+    return pageNumbers;
+  };
+
+  return (
+    <div className="pagination">
+      <button onClick={() => onPageChange(currentPage - 1)} disabled={currentPage === 1}>
+        Previous
       </button>
-    ))}
-    <button onClick={() => onPageChange(currentPage + 1)} disabled={currentPage === totalPages}>
-      Next
-    </button>
-  </div>
-)
+      {renderPageNumbers()}
+      <button onClick={() => onPageChange(currentPage + 1)} disabled={currentPage === totalPages}>
+        Next
+      </button>
+    </div>
+  );
+};
 
-export default SearchResultPage
-
+export default SearchResultPage;
