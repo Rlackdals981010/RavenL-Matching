@@ -20,6 +20,7 @@ const postRoutes = require('./routes/postRoutes');
 const searchRoutes = require('./routes/searchRoutes');
 const paymentRoutes = require('./routes/paymentRoutes');
 const chatRoutes = require("./routes/chatRoutes");
+const uploadRoutes = require('./routes/upload');
 
 app.use('/auth', authRoutes);
 app.use('/mypage', userRoutes);
@@ -27,6 +28,7 @@ app.use('/', postRoutes);
 app.use('/search', searchRoutes);
 app.use('/payment', paymentRoutes);
 app.use("/chat", chatRoutes);
+app.use('/upload', uploadRoutes);
 
 // 데이터베이스 연결
 sequelize.authenticate()
