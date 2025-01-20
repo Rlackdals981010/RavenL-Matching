@@ -6,6 +6,7 @@ import RePassword from "./pages/Repassword";
 import NewPassword from "./pages/Newpassword";
 import Signup from "./pages/Signup";
 import ChatPage from "./pages/ChatPage"; // ChatPage 추가
+import SearchPage from "./pages/SearchResult";
 
 const App = () => {
   return (
@@ -17,6 +18,7 @@ const App = () => {
         <Route path="/auth/re-password/new" element={<NewPassword />} /> {/* 비번 변경 페이지 */}
         <Route path="/signup" element={<Signup />} /> {/* 회원가입 페이지 */}
         <Route path="/chat" element={<ChatPage />} />
+        <Route path="/search" element={<SearchPage />} />
       </Routes>
     </Router>
   );

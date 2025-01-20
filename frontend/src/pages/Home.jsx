@@ -14,8 +14,8 @@ const HomePage = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userInfo, setUserInfo] = useState({ name: "", email: "" });
   const [inputValue, setInputValue] = useState("");
-  const [showLoginPopup, setShowLoginPopup] = useState(false); // 로그인 팝업 상태
-  const [showMyPagePopup, setShowMyPagePopup] = useState(false); // MyPage 팝업 상태
+  const [showLoginPopup, setShowLoginPopup] = useState(false);
+  const [showMyPagePopup, setShowMyPagePopup] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -50,16 +50,41 @@ const HomePage = () => {
     setShowMyPagePopup(false);
   };
 
-  const handleSendClick = () => {
-    if (!isLoggedIn) {
-      setShowLoginPopup(true); // 로그인 팝업 표시
-    } else {
-      console.log("Message sent:", inputValue);
+const handleSendClick = async () => {
+  if (!isLoggedIn) {
+    setShowLoginPopup(true);
+    return;
+  }
+
+  if (!inputValue.trim()) {
+    alert("Please enter a valid query.");
+    return;
+  }
+
+  try {
+    const response = await fetch("http://localhost:5001/search", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+      body: JSON.stringify({ order: inputValue.trim() }),
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to fetch search results.");
     }
-  };
+
+    const data = await response.json();
+    navigate("/search", { state: { results: data.result || [] } }); // 결과 전달
+  } catch (error) {
+    console.error("Error fetching search results:", error);
+    alert("Failed to fetch search results. Please try again.");
+  }
+};
 
   const closeLoginPopup = () => {
-    setShowLoginPopup(false); // 로그인 팝업 닫기
+    setShowLoginPopup(false);
   };
 
   return (
@@ -132,7 +157,6 @@ const HomePage = () => {
         </div>
       </div>
 
-      {/* 로그인 팝업 */}
       {showLoginPopup && (
         <div className="home-popup-overlay" onClick={closeLoginPopup}>
           <div className="home-popup" onClick={(e) => e.stopPropagation()}>
@@ -147,7 +171,6 @@ const HomePage = () => {
         </div>
       )}
 
-      {/* MyPage 팝업 */}
       {showMyPagePopup && (
         <div className="mypage-popup">
           <div className="mypage-header">

@@ -2,7 +2,7 @@
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    
+
 }
 
 .home-header {
@@ -24,10 +24,13 @@
 /* 기존 로그인 버튼 스타일 수정 */
 .home-login-button {
     padding: 8px 16px;
-    border: 1px solid #1B4BC3; /* 버튼 테두리 색상 */
+    border: 1px solid #1B4BC3;
+    /* 버튼 테두리 색상 */
     border-radius: 4px;
-    background-color: #1B4BC3; /* 배경 색상 */
-    color: white; /* 텍스트 색상 */
+    background-color: #1B4BC3;
+    /* 배경 색상 */
+    color: white;
+    /* 텍스트 색상 */
     cursor: pointer;
     font-size: 14px;
     font-weight: bold;
@@ -35,23 +38,46 @@
 }
 
 .home-login-button:hover {
-    background-color: #1546a0; /* 호버 시 색상 */
+    background-color: #1546a0;
+    /* 호버 시 색상 */
 }
 
 /* 마이페이지 버튼 (기존과 동일) */
 .home-mypage-button {
-    padding: 8px;
+    padding: 0;
+    /* 기본 여백 제거 */
     border: none;
+    /* 테두리 제거 */
     background: none;
+    /* 배경 제거 */
     cursor: pointer;
+    /* 클릭 가능하도록 설정 */
     display: flex;
+    /* 내부 아이콘 정렬 */
     align-items: center;
+    /* 수직 중앙 정렬 */
+    justify-content: center;
+    /* 수평 중앙 정렬 */
+    width: 33px;
+    /* 버튼 크기 고정 */
+    height: 33px;
+    /* 버튼 크기 고정 */
+}
+
+.home-mypage-icon {
+    width: 33px;
+    /* 아이콘 너비 */
+    height: 33px;
+    /* 아이콘 높이 */
+    margin-right: 8px;
+    /* 오른쪽 여백 */
 }
 
 .home-content {
     display: flex;
     flex: 1;
-    gap: 0; /* 간격 제거 */
+    gap: 0;
+    /* 간격 제거 */
 }
 
 .home-sidebar {
@@ -60,8 +86,9 @@
     background-color: white;
     display: flex;
     flex-direction: column;
-    padding: 40px 0 ;
-    margin: 0; /* 외부 간격 제거 */
+    padding: 40px 0;
+    margin: 0;
+    /* 외부 간격 제거 */
 }
 
 .home-sidebar-link {

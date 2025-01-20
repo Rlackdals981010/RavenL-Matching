@@ -1,0 +1,115 @@
+/* 메인 콘텐츠 컨테이너 스타일 */
+.research-main-content {
+  flex: 1;
+  background-color: #f7f9fd;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  /* Changed from center to flex-start */
+  padding: 20px;
+  padding-left: 40px;
+  /* Added padding to create gap from sidebar */
+}
+
+/* 콘텐츠 제목 스타일 */
+.research-content-title {
+  font-weight: bold;
+  margin-bottom: 16px;
+  color: #000000;
+  display: flex;
+  align-items: center;
+  margin-left: 0;
+  /* Adjusted from 20px to 0 since parent has padding now */
+}
+
+.research-content-title span {
+  color: #1b4bc3;
+  margin-left: 8px;
+}
+
+/* 콘텐츠 박스 스타일 */
+.research-content-box {
+  background-color: white;
+  padding: 24px;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  width: 100%;
+  max-width: 1200px;
+  min-height: 400px;
+  overflow-x: auto;
+}
+
+/* 테이블 스타일 */
+.research-content-box table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 0;
+}
+
+/* 테이블 헤더와 바디 사이의 구분선 */
+.research-content-box thead {
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.research-content-box thead th {
+  padding-bottom: 16px;
+  /* 헤더 텍스트와 선 사이의 간격 */
+}
+
+.research-content-box tbody tr:first-child td {
+  padding-top: 16px;
+  /* 첫 번째 데이터 행과 선 사이의 간격 */
+}
+
+.research-content-box th,
+.research-content-box td {
+  padding: 12px;
+  border: none;
+  text-align: left;
+}
+
+.research-content-box th {
+  background-color: transparent;
+  font-weight: bold;
+}
+
+/* 검색 결과 테이블 스타일 */
+.research-results tr {
+  border-bottom: 1px solid #ddd;
+}
+
+.research-results tr:last-child {
+  border-bottom: none;
+}
+
+.research-results td {
+  padding: 12px;
+  text-align: left;
+  vertical-align: middle;
+}
+
+/* Chatting 버튼 스타일 */
+.chatting-button {
+  padding: 6px 12px;
+  background-color: #1b4bc3;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.chatting-button:hover {
+  background-color: #174a9c;
+}
+
+/* "No results found" 메시지 스타일 */
+.no-results-message {
+  text-align: center;
+  color: #999;
+  font-size: 16px;
+  padding: 20px 0;
+}
