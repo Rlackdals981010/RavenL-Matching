@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom"; // useNavigate 가져오기
+import { useNavigate } from "react-router-dom";
 import "./Newpassword.css";
-import api from "../utils/api";
+import { apiFetch } from "../utils/apiFetch"; // apiFetch 가져오기
 import logo from "../assets/logo1-1.png";
 import showOn from "../assets/show-on.png";
 import showOff from "../assets/show-off.png";
@@ -13,7 +13,8 @@ export default function NewPassword() {
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [message, setMessage] = useState("");
-    const navigate = useNavigate(); // useNavigate 초기화
+    const navigate = useNavigate();
+
     const handlePasswordChange = async () => {
         if (!newPassword || !confirmPassword) {
             setMessage("Please fill in both fields.");
@@ -27,19 +28,14 @@ export default function NewPassword() {
         setMessage("");
 
         try {
-            const token = localStorage.getItem("token"); // JWT 토큰 가져오기
-            await api.post(
-                "/auth/re-password/new",
-                { newPassword },
-                {
-                    headers: {
-                        Authorization: `Bearer ${token}`, // Authorization 헤더 설정
-                    },
-                }
-            );
+            await apiFetch("/auth/re-password/new", {
+                method: "POST",
+                body: JSON.stringify({ newPassword }),
+            });
             setMessage("Password changed successfully!");
             navigate("/auth");
         } catch (error) {
+            console.error("Error changing password:", error.message);
             setMessage("Failed to change password. Please try again.");
         } finally {
             setIsLoading(false);

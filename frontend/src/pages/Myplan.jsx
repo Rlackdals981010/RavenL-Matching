@@ -7,6 +7,7 @@ import homeOff from "../assets/home-off.png";
 import chatOn from "../assets/chat-on.png";
 import chatOff from "../assets/chat-off.png";
 import mypageIcon from "../assets/mypage.png";
+import { apiFetch } from "../utils/apiFetch"; // apiFetch 추가
 
 const PlanAndPayment = () => {
     const [activeTab, setActiveTab] = useState("home");
@@ -15,33 +16,19 @@ const PlanAndPayment = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        // 구독 상태 조회 함수
         const fetchSubscriptionStatus = async () => {
             try {
-                const token = localStorage.getItem("token");
-                const response = await fetch(
-                    "http://localhost:5001/payment/subscription/status",
-                    {
-                        method: "GET",
-                        headers: {
-                            Authorization: `Bearer ${token}`,
-                        },
-                    }
-                );
+                const data = await apiFetch("/payment/subscription/status", {
+                    method: "GET",
+                });
 
-                if (!response.ok) {
-                    const errorData = await response.json();
-                    if (errorData.message === "No subscription found for this user.") {
-                        setSubscriptionStatus({ plan: "Free", localStatus: "NONE" });
-                    } else {
-                        throw new Error("Failed to fetch subscription status.");
-                    }
+                if (data.message === "No subscription found for this user.") {
+                    setSubscriptionStatus({ plan: "Free", localStatus: "NONE" });
                 } else {
-                    const data = await response.json();
                     setSubscriptionStatus(data);
                 }
             } catch (error) {
-                console.error("Error fetching subscription status:", error);
+                console.error("Error fetching subscription status:", error.message);
             }
         };
 

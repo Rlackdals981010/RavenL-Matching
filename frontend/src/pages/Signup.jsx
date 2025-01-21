@@ -4,7 +4,7 @@ import "./Signup.css";
 import logo from "../assets/logo1-1.png";
 import showOn from "../assets/show-on.png";
 import showOff from "../assets/show-off.png";
-import api from "../utils/api";
+import { apiFetch } from "../utils/apiFetch";
 
 export default function Signup() {
     const [email, setEmail] = useState("");
@@ -27,7 +27,10 @@ export default function Signup() {
     const handleSendVerificationCode = async () => {
         try {
             setMessage("Sending verification code...");
-            await api.post("/auth/signup", { email });
+            await apiFetch("/auth/signup", {
+                method: "POST",
+                body: JSON.stringify({ email }),
+            });
             setMessage("Verification code sent. Check your email.");
         } catch (error) {
             setMessage("Failed to send verification code.");
@@ -37,9 +40,12 @@ export default function Signup() {
     const handleVerifyCode = async () => {
         try {
             setMessage("Verifying code...");
-            await api.post("/auth/verify-code", { email, code: verificationCode });
+            await apiFetch("/auth/verify-code", {
+                method: "POST",
+                body: JSON.stringify({ email, code: verificationCode }),
+            });
             setIsVerified(true);
-            setMessage(""); // 성공 메시지 숨김
+            setMessage("");
         } catch (error) {
             setMessage("Invalid or expired verification code.");
         }
@@ -66,15 +72,18 @@ export default function Signup() {
         setMessage("Signing up...");
 
         try {
-            await api.post("/auth/complete-signup", {
-                email,
-                password,
-                name,
-                company,
-                position: jobTitle,
-                region: location,
-                product: productType,
-                job: purpose.toLowerCase(),
+            await apiFetch("/auth/complete-signup", {
+                method: "POST",
+                body: JSON.stringify({
+                    email,
+                    password,
+                    name,
+                    company,
+                    position: jobTitle,
+                    region: location,
+                    product: productType,
+                    job: purpose.toLowerCase(),
+                }),
             });
             navigate("/auth");
         } catch (error) {
@@ -227,14 +236,14 @@ export default function Signup() {
                                 <div className="signup-purpose-options">
                                     <button
                                         type="button"
-                                        className={`signup-purpose-button ${purpose === "buyer" ? "selected" : ""}`}
+                                        className={`signup-purpose-button ${purpose === "Buyer" ? "selected" : ""}`}
                                         onClick={() => setPurpose("Buyer")}
                                     >
                                         Buyer
                                     </button>
                                     <button
                                         type="button"
-                                        className={`signup-purpose-button ${purpose === "seller" ? "selected" : ""}`}
+                                        className={`signup-purpose-button ${purpose === "Seller" ? "selected" : ""}`}
                                         onClick={() => setPurpose("Seller")}
                                     >
                                         Seller

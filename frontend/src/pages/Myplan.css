@@ -6,6 +6,23 @@
     min-height: 100vh;
 }
 
+.plan-container {
+    flex: 1;
+    background-color: #f7f9fd;
+    display: flex;
+
+
+    justify-content: center;
+    /* 가로 방향 중앙 정렬 */
+    align-items: center;
+    /* 세로 방향 중앙 정렬 */
+    /* Changed from center to flex-start */
+    padding: 20px;
+    padding-left: 40px;
+
+    
+}
+
 .plan-details {
     display: flex;
     flex-direction: column;
@@ -55,39 +72,58 @@
 }
 
 .plan-upgrade-button {
-    background-color: #F7F9FD; /* 배경색 */
-    color: #1B4BC3; /* 텍스트 색상 */
-    border: 2px solid #1B4BC3; /* 파란색 테두리 */
-    padding: 10px 10px; /* 버튼 내부 여백 */
-    border-radius: 8px; /* 둥근 모서리 */
+    background-color: #F7F9FD;
+    /* 배경색 */
+    color: #1B4BC3;
+    /* 텍스트 색상 */
+    border: 2px solid #1B4BC3;
+    /* 파란색 테두리 */
+    padding: 10px 10px;
+    /* 버튼 내부 여백 */
+    border-radius: 8px;
+    /* 둥근 모서리 */
     cursor: pointer;
     font-size: 14px;
-    font-weight: 600; /* 세미볼드 */
-    transition: background-color 0.3s, color 0.3s; /* 호버 시 부드러운 변화 */
+    font-weight: 600;
+    /* 세미볼드 */
+    transition: background-color 0.3s, color 0.3s;
+    /* 호버 시 부드러운 변화 */
 }
 
 .plan-stop-button {
-    background-color: #ffffff; /* 배경색 */
-    color: #C2C2C2; /* 텍스트 색상 */
-    border: 2px solid #C2C2C2; /* 파란색 테두리 */
-    padding: 10px 10px; /* 버튼 내부 여백 */
-    border-radius: 8px; /* 둥근 모서리 */
+    background-color: #ffffff;
+    /* 배경색 */
+    color: #C2C2C2;
+    /* 텍스트 색상 */
+    border: 2px solid #C2C2C2;
+    /* 파란색 테두리 */
+    padding: 10px 10px;
+    /* 버튼 내부 여백 */
+    border-radius: 8px;
+    /* 둥근 모서리 */
     cursor: pointer;
     font-size: 14px;
-    font-weight: 600; /* 세미볼드 */
-    transition: background-color 0.3s, color 0.3s; /* 호버 시 부드러운 변화 */
+    font-weight: 600;
+    /* 세미볼드 */
+    transition: background-color 0.3s, color 0.3s;
+    /* 호버 시 부드러운 변화 */
 }
 
 .plan-upgrade-button:hover {
-    background-color: #1B4BC3; /* 호버 시 배경색 변경 */
-    color: #FFFFFF; /* 호버 시 텍스트 색상 변경 */
+    background-color: #1B4BC3;
+    /* 호버 시 배경색 변경 */
+    color: #FFFFFF;
+    /* 호버 시 텍스트 색상 변경 */
 }
 
 .plan-stop-button:hover {
-    background-color: #C2C2C2; /* 호버 시 배경색 변경 */
-    color: #000; /* 호버 시 텍스트 색상 변경 */
+    background-color: #C2C2C2;
+    /* 호버 시 배경색 변경 */
+    color: #000;
+    /* 호버 시 텍스트 색상 변경 */
 }
 
 .next-payment-value {
-    color: #000; /* 검정색 */
+    color: #000;
+    /* 검정색 */
 }

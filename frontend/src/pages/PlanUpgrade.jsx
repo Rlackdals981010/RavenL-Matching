@@ -7,6 +7,7 @@ import homeOff from "../assets/home-off.png";
 import chatOn from "../assets/chat-on.png";
 import chatOff from "../assets/chat-off.png";
 import mypageIcon from "../assets/mypage.png";
+import { apiFetch } from "../utils/apiFetch"; // apiFetch 추가
 
 const PlanUpgrade = () => {
     const [activeTab, setActiveTab] = useState("home");
@@ -28,24 +29,12 @@ const PlanUpgrade = () => {
 
     const handleUpgrade = async () => {
         try {
-            const token = localStorage.getItem("token");
-
-            const response = await fetch("http://localhost:5001/payment/subscription/create", {
+            const data = await apiFetch("/payment/subscription/create", {
                 method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${token}`,
-                },
                 body: JSON.stringify({
                     planId: "YOUR_PLAN_ID", // Plan ID 추가
                 }),
             });
-
-            if (!response.ok) {
-                throw new Error("Failed to create subscription.");
-            }
-
-            const data = await response.json();
 
             if (data.approvalUrl) {
                 window.open(data.approvalUrl, "_blank"); // 새 창에서 승인 URL 열기

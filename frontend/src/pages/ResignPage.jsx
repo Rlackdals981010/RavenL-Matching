@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "./ResignPage.css";
+import { apiFetch } from "../utils/apiFetch";
 
 const ResignPage = () => {
   const [reason, setReason] = useState([]);
@@ -15,20 +16,16 @@ const ResignPage = () => {
 
   const handleResign = async () => {
     try {
-      const response = await fetch("http://localhost:5000/mypage/resign", {
+      await apiFetch("/mypage/resign", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
         body: JSON.stringify({ reason, comment: additionalComment }),
       });
-      if (!response.ok) throw new Error("Failed to process resignation.");
+
       alert("Your account has been deactivated.");
       localStorage.removeItem("token"); // 로그아웃 처리
       window.location.href = "/"; // 홈으로 이동
     } catch (error) {
-      console.error(error.message);
+      console.error("Error processing resignation:", error.message);
     }
   };
 

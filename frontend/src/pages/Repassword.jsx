@@ -1,6 +1,6 @@
 import { useState } from "react";
 import "./Repassword.css";
-import api from "../utils/api"; // Axios 인스턴스 가져오기
+import { apiFetch } from "../utils/apiFetch"; // apiFetch 가져오기
 import logo from "../assets/logo1-1.png";
 import { useNavigate } from "react-router-dom"; // useNavigate 가져오기
 
@@ -17,19 +17,23 @@ export default function Repassword() {
     const handleSendEmail = async () => {
         if (!email) {
             setMessage("Please enter a valid email.");
-            setMessageType("error"); // 오류 메시지
+            setMessageType("error");
             return;
         }
         setIsLoading(true);
         setMessage("");
         try {
-            const response = await api.post("/auth/re-password", { email });
-            setMessage(response.data.message || "Password reset token sent to email.");
-            setMessageType("success"); // 성공 메시지
+            const response = await apiFetch("/auth/re-password", {
+                method: "POST",
+                body: JSON.stringify({ email }),
+            });
+            setMessage(response.message || "Password reset token sent to email.");
+            setMessageType("success");
             setIsCodeSent(true);
         } catch (error) {
+            console.error("Error sending email:", error.message);
             setMessage("Failed to send email. Please try again.");
-            setMessageType("error"); // 오류 메시지
+            setMessageType("error");
         } finally {
             setIsLoading(false);
         }
@@ -38,20 +42,24 @@ export default function Repassword() {
     const handleVerifyCode = async () => {
         if (!token) {
             setMessage("Please enter the verification code.");
-            setMessageType("error"); // 오류 메시지
+            setMessageType("error");
             return;
         }
         setIsLoading(true);
         setMessage("");
         try {
-            const response = await api.post("/auth/re-password/code", { token });
-            localStorage.setItem("token", response.data.token); // JWT 토큰 저장
+            const response = await apiFetch("/auth/re-password/code", {
+                method: "POST",
+                body: JSON.stringify({ token }),
+            });
+            localStorage.setItem("token", response.token); // JWT 토큰 저장
             setMessage("Verification successful! Proceeding to next step.");
-            setMessageType("success"); // 성공 메시지
+            setMessageType("success");
             navigate("/auth/re-password/new"); // 비밀번호 변경 페이지로 이동
         } catch (error) {
+            console.error("Error verifying code:", error.message);
             setMessage("Invalid verification code. Please try again.");
-            setMessageType("error"); // 오류 메시지
+            setMessageType("error");
         } finally {
             setIsLoading(false);
         }
@@ -66,8 +74,6 @@ export default function Repassword() {
                         Forget Password?
                     </div>
                 </div>
-
-                
 
                 <form className="login-form" onSubmit={(e) => e.preventDefault()}>
                     <div className="input-group">

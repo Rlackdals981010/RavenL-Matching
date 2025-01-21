@@ -1,4 +1,6 @@
-.signup-container {
+/* 전체 컨테이너 스타일 */
+.signup-container,
+.myprofile-container {
     min-height: 100vh;
     display: flex;
     align-items: center;
@@ -8,7 +10,9 @@
     /* 스크롤 시 여유 공간 확보 */
 }
 
-.signup-box {
+/* 공통 박스 스타일 */
+.signup-box,
+.myprofile-box {
     width: 100%;
     max-width: 400px;
     background-color: white;
@@ -16,47 +20,55 @@
     border-radius: 8px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
     overflow-y: auto;
-    /* 스크롤 가능 */
     max-height: 90vh;
     /* 화면 높이 제한 */
 }
 
-.signup-header {
+/* 헤더 스타일 */
+.signup-header,
+.myprofile-header {
     text-align: center;
     margin-bottom: 2rem;
 }
 
-.signup-logo {
+.signup-logo,
+.myprofile-logo {
     height: 60px;
     width: auto;
     margin-bottom: 1rem;
 }
 
-.signup-title {
+.signup-title,
+.myprofile-title {
     font-size: 1.5rem;
     font-weight: bold;
 }
 
-.signup-form {
+/* 폼 스타일 */
+.signup-form,
+.myprofile-form {
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
 }
 
-.signup-input-group {
-    display: grid;
+/* 입력 그룹 스타일 */
+.signup-input-group,
+.myprofile-input-group {
+    display: flex;
+    flex-direction: column;
     gap: 0.5rem;
 }
 
-.signup-input-group label {
+.signup-input-group label,
+.myprofile-input-group label {
     font-weight: bold;
     font-size: 0.9rem;
-    max-width: 300px;
-    display: inline-block;
 }
 
-.signup-input-group input {
-    width: 90%;
+.signup-input-group input,
+.myprofile-input-group input {
+    width: 100%;
     height: 44px;
     padding: 0 12px;
     border: 1px solid #d1d5db;
@@ -64,103 +76,77 @@
     font-size: 0.875rem;
 }
 
-.signup-input-group input:focus {
+.signup-input-group input:focus,
+.myprofile-input-group input:focus {
     outline: none;
     border-color: #2563eb;
     box-shadow: 0 0 0 1px #2563eb;
 }
 
-.signup-input-group small {
-    font-size: 0.75rem;
-    color: #6b7280;
+/* 버튼 스타일 */
+.signup-button,
+.myprofile-save-button {
+    width: 100%;
+    height: 45px;
+    background-color: #2563eb;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
 }
 
+.signup-button:hover,
+.myprofile-save-button:hover {
+    background-color: #1d4ed8;
+}
+
+.signup-button:disabled,
+.myprofile-save-button:disabled {
+    background-color: #93c5fd;
+    cursor: not-allowed;
+}
+
+/* 비밀번호 토글 버튼 */
+.signup-password-input-wrapper,
+.signup-password-toggle {
+    position: relative;
+}
+
+.signup-password-toggle {
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: #6b7280;
+    cursor: pointer;
+    width: 24px;
+    height: 24px;
+}
+
+.signup-password-toggle img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+/* 메시지 스타일 */
+.signup-message,
+.myprofile-message {
+    text-align: center;
+    color: red;
+    font-size: 0.875rem;
+    margin-top: -10px;
+}
+
+/* 버튼 선택 옵션 */
 .signup-purpose-options {
     display: flex;
     gap: 10px;
     margin-top: 0.5rem;
-
-    .myprofile-container {
-        min-height: 100vh;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background-color: #F7F9FD;
-        padding: 20px;
-    }
-
-    .myprofile-box {
-        width: 100%;
-        max-width: 400px;
-        background-color: white;
-        padding: 2rem;
-        border-radius: 8px;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-        overflow-y: auto;
-        max-height: 90vh;
-    }
-
-    .myprofile-header {
-        text-align: center;
-        margin-bottom: 2rem;
-    }
-
-    .myprofile-title {
-        font-size: 1.5rem;
-        font-weight: bold;
-    }
-
-    .myprofile-form {
-        display: flex;
-        flex-direction: column;
-        gap: 1.5rem;
-    }
-
-    .myprofile-input-group {
-        display: flex;
-        flex-direction: column;
-        gap: 0.5rem;
-    }
-
-    .myprofile-input-group label {
-        font-weight: bold;
-        font-size: 0.9rem;
-    }
-
-    .myprofile-input-group input {
-        width: 100%;
-        height: 44px;
-        padding: 0 12px;
-        border: 1px solid #d1d5db;
-        border-radius: 5px;
-        font-size: 0.875rem;
-    }
-
-    .myprofile-input-group input:focus {
-        outline: none;
-        border-color: #2563eb;
-        box-shadow: 0 0 0 1px #2563eb;
-    }
-
-    .myprofile-save-button {
-        width: 100%;
-        height: 45px;
-        background-color: #2563eb;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        font-size: 1rem;
-        cursor: pointer;
-    }
-
-    .myprofile-save-button:hover {
-        background-color: #1d4ed8;
-    }
-
-    .myprofile-save-button:disabled {
-        background-color: #93c5fd;
-        cursor: not-allowed;
-    }
 }
 
 .signup-purpose-button {
@@ -174,87 +160,17 @@
 }
 
 .signup-purpose-button.selected {
+    background-color: #2563eb;
+    color: white;
     border-color: #2563eb;
-    color: white;
-    background-color: #2563eb;
 }
 
-.signup-button {
-    width: 100%;
-    height: 45px;
-    background-color: #2563eb;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    font-size: 1rem;
-    cursor: pointer;
-}
-
-.signup-button:hover {
-    background-color: #1d4ed8;
-}
-
-.signup-button:disabled {
+.signup-purpose-button:hover {
     background-color: #93c5fd;
-    cursor: not-allowed;
-}
-
-.signup-password-input-wrapper {
-    position: relative;
-}
-
-.signup-password-toggle {
-    position: absolute;
-    right: 16px;
-    /* 눈 아이콘 위치 */
-    top: 50%;
-    transform: translateY(-50%);
-    background: none;
-    border: none;
-    color: #6b7280;
-    cursor: pointer;
-    width: 24px;
-    /* 아이콘 크기 지정 */
-    height: 24px;
-}
-
-.signup-password-toggle img {
-    width: 100%;
-    /* 이미지 크기를 버튼에 맞게 조정 */
-    height: 100%;
-    object-fit: contain;
-    /* 이미지 비율 유지 */
-}
-
-.signup-message {
-    text-align: center;
-    color: red;
-    font-size: 0.875rem;
-    margin-top: -10px;
-}
-
-.signup-input-with-button {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    /* 버튼과 입력 필드 간격 */
-}
-
-.signup-input-with-button input {
-    flex: 1;
-    height: 44px;
-    padding: 0 12px;
-    border: 1px solid #d1d5db;
-    border-radius: 5px;
-    font-size: 0.875rem;
-}
-
-.signup-input-with-button input:focus {
-    outline: none;
     border-color: #2563eb;
-    box-shadow: 0 0 0 1px #2563eb;
 }
 
+/* 이메일 전송 버튼 */
 .signup-email-button {
     height: 44px;
     padding: 0 16px;
@@ -264,6 +180,7 @@
     border-radius: 5px;
     font-size: 0.875rem;
     cursor: pointer;
+    transition: background-color 0.2s ease;
 }
 
 .signup-email-button:hover {
@@ -273,4 +190,11 @@
 .signup-email-button:disabled {
     background-color: #93c5fd;
     cursor: not-allowed;
+}
+
+/* 입력 필드와 버튼 간격 */
+.signup-input-with-button {
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
