@@ -1,0 +1,159 @@
+.plan-upgrade-content {
+    flex: 1;
+    padding: 40px;
+    background-color: #F7F9FD;
+}
+
+.plan-upgrade-content h2 {
+    font-size: 24px;
+    margin-bottom: 15px;
+    color: #333;
+}
+
+.plan-upgrade-content p {
+    font-size: 16px;
+    color: #666;
+    margin-bottom: 30px;
+}
+
+.plan-upgrade-buttons {
+    display: flex;
+    justify-content: space-between;
+}
+
+.confirm-upgrade-button,
+.cancel-upgrade-button {
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    border: none;
+    transition: background-color 0.3s;
+}
+
+.confirm-upgrade-button {
+    background-color: #007bff;
+    color: #fff;
+}
+
+.confirm-upgrade-button:hover {
+    background-color: #0056b3;
+}
+
+.cancel-upgrade-button {
+    background-color: #f5f5f5;
+    color: #333;
+    border: 1px solid #ddd;
+}
+
+.cancel-upgrade-button:hover {
+    background-color: #e0e0e0;
+}
+
+.plan-container {
+    display: flex;
+    justify-content: space-between;
+    /* 박스 간 일정한 간격 유지 */
+    align-items: center;
+    /* 세로 중앙 정렬 */
+    gap: 10px;
+    /* 두 박스 간 간격 */
+    max-width: 1200px; /* 컨테이너 최대 너비 */
+    padding: 40px;
+    /* 컨테이너 내부 여백 */
+    margin: auto;
+    /* 컨테이너를 수직/수평으로 중앙에 배치 */
+    height: 70vh;
+    /* 컨테이너 높이를 적절히 설정 */
+    background-color: #f7f9fd;
+    ;
+}
+
+.free-plan-box,
+.premium-plan-box {
+    background-color: #ffffff;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    width: 500px;
+    /* 박스 크기 */
+    height: 400px;
+    /* 박스 높이 */
+    text-align: center;
+    display: flex;
+    /* 박스 내부 정렬을 위한 flex */
+    flex-direction: column;
+    /* 세로 정렬 */
+    justify-content: space-between;
+    /* 내부 요소 간격 자동 조정 */
+}
+
+.free-plan-box {
+    border: 2px solid #e0e0e0;
+    /* 연한 회색 테두리 */
+}
+
+.premium-plan-box {
+    border: 2px solid #1b4bc3;
+    /* 파란 테두리 */
+}
+
+.plan-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.plan-price {
+    font-size: 28px;
+    font-weight: bold;
+    margin: 10px 0;
+}
+
+.plan-duration {
+    font-size: 14px;
+    color: #888;
+}
+
+.current-plan-button,
+.upgrade-button {
+    margin: 20px 0;
+    padding: 12px 24px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.current-plan-button {
+    background-color: #f7f9fd;
+    color: #1b4bc3;
+    border: 1px solid #1b4bc3;
+}
+
+.current-plan-button:hover {
+    background-color: #1b4bc3;
+    color: #fff;
+}
+
+.upgrade-button {
+    background-color: #1b4bc3;
+    color: #fff;
+    border: none;
+}
+
+.upgrade-button:hover {
+    background-color: #0056b3;
+}
+
+.plan-features {
+    list-style: none;
+    padding: 0;
+    margin: 20px 0 0;
+    font-size: 14px;
+    color: #666;
+}
+
+.plan-features li {
+    margin-bottom: 5px;
+}

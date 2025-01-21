@@ -9,6 +9,8 @@ import ChatPage from "./pages/ChatPage"; // ChatPage 추가
 import SearchPage from "./pages/SearchResult";
 import MyProfilePage from "./pages/MyProfilePage";
 import MyPlan from "./pages/Myplan";
+import PlanUpgrade from "./pages/PlanUpgrade";
+import ExpiredSession from "./pages/ExpiredSession";
 
 const App = () => {
   return (
@@ -23,6 +25,8 @@ const App = () => {
         <Route path="/search" element={<SearchPage />} />
         <Route path="/mypage" element={<MyProfilePage />} />
         <Route path="/myplan" element={<MyPlan />} />
+        <Route path="/plan-upgrade" element={<PlanUpgrade />} />
+        <Route path="/auth/expired" element={<ExpiredSession />} />
       </Routes>
     </Router>
   );

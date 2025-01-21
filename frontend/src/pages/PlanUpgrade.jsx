@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "./Myplan.css";
+import "./PlanUpgrade.css";
 import "./Home.css";
 import homeOn from "../assets/home-on.png";
 import homeOff from "../assets/home-off.png";
@@ -8,45 +8,10 @@ import chatOn from "../assets/chat-on.png";
 import chatOff from "../assets/chat-off.png";
 import mypageIcon from "../assets/mypage.png";
 
-const PlanAndPayment = () => {
+const PlanUpgrade = () => {
     const [activeTab, setActiveTab] = useState("home");
     const [showMyPagePopup, setShowMyPagePopup] = useState(false);
-    const [subscriptionStatus, setSubscriptionStatus] = useState(null);
     const navigate = useNavigate();
-
-    useEffect(() => {
-        // 구독 상태 조회 함수
-        const fetchSubscriptionStatus = async () => {
-            try {
-                const token = localStorage.getItem("token");
-                const response = await fetch(
-                    "http://localhost:5001/payment/subscription/status",
-                    {
-                        method: "GET",
-                        headers: {
-                            Authorization: `Bearer ${token}`,
-                        },
-                    }
-                );
-
-                if (!response.ok) {
-                    const errorData = await response.json();
-                    if (errorData.message === "No subscription found for this user.") {
-                        setSubscriptionStatus({ plan: "Free", localStatus: "NONE" });
-                    } else {
-                        throw new Error("Failed to fetch subscription status.");
-                    }
-                } else {
-                    const data = await response.json();
-                    setSubscriptionStatus(data);
-                }
-            } catch (error) {
-                console.error("Error fetching subscription status:", error);
-            }
-        };
-
-        fetchSubscriptionStatus();
-    }, []);
 
     const handleTabClick = (tab) => {
         setActiveTab(tab);
@@ -59,6 +24,38 @@ const PlanAndPayment = () => {
     const handleLogout = () => {
         localStorage.removeItem("token");
         navigate("/auth");
+    };
+
+    const handleUpgrade = async () => {
+        try {
+            const token = localStorage.getItem("token");
+
+            const response = await fetch("http://localhost:5001/payment/subscription/create", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                },
+                body: JSON.stringify({
+                    planId: "YOUR_PLAN_ID", // Plan ID 추가
+                }),
+            });
+
+            if (!response.ok) {
+                throw new Error("Failed to create subscription.");
+            }
+
+            const data = await response.json();
+
+            if (data.approvalUrl) {
+                window.open(data.approvalUrl, "_blank"); // 새 창에서 승인 URL 열기
+            } else {
+                alert("Approval URL not found.");
+            }
+        } catch (error) {
+            console.error("Error upgrading subscription:", error.message);
+            alert("Failed to upgrade subscription. Please try again.");
+        }
     };
 
     return (
@@ -106,42 +103,39 @@ const PlanAndPayment = () => {
                 </div>
 
                 {/* Main Content */}
-                <div className="plan-content">
-                    <h2>Plan & Payment</h2>
-                    {subscriptionStatus ? (
-                        <div className="plan-details">
-                            <div className="plan-row">
-                                <div className="plan-info">
-                                    <span className="plan-label">Your Plan</span>
-                                    <span className="plan-value">
-                                        {subscriptionStatus.plan || "Free"}
-                                    </span>
-                                </div>
-                                <button
-                                    className="plan-upgrade-button"
-                                    onClick={() => navigate("/plan-upgrade")}
-                                >
-                                    Upgrade
-                                </button>
-                            </div>
-                            <div className="plan-row">
-                                <div className="plan-info">
-                                    <span className="plan-label">Next Payment Date</span>
-                                    <span className="plan-value next-payment-value">
-                                        {subscriptionStatus.localStatus === "CANCELED" ||
-                                            subscriptionStatus.localStatus === "NONE"
-                                            ? "No Payment Scheduled"
-                                            : subscriptionStatus.endDate
-                                                ? new Date(subscriptionStatus.endDate).toLocaleDateString()
-                                                : "N/A"}
-                                    </span>
-                                </div>
-                                <button className="plan-stop-button">Stop</button>
-                            </div>
+                <div className="plan-upgrade-content">
+                    <h2>Plan Pricing</h2>
+                    <p>Unlock access to all features and enjoy the full potential of our service.</p>
+                    <div className="plan-container">
+                        <div className="free-plan-box">
+                            <h3 className="plan-title">Starter</h3>
+                            <p className="plan-price">
+                                FREE <span className="plan-duration">/ per month</span>
+                            </p>
+                            <button className="current-plan-button">Current Plan</button>
+                            <ul className="plan-features">
+                                <li>✓ 10 credits</li>
+                                <li>✓ 10 credits</li>
+                                <li>✓ 10 credits</li>
+                                <li>✓ 10 credits</li>
+                            </ul>
                         </div>
-                    ) : (
-                        <p>Loading subscription details...</p>
-                    )}
+                        <div className="premium-plan-box">
+                            <h3 className="plan-title">Premium</h3>
+                            <p className="plan-price">
+                                $90 <span className="plan-duration">/ per month</span>
+                            </p>
+                            <button className="upgrade-button" onClick={handleUpgrade}>
+                                Upgrade
+                            </button>
+                            <ul className="plan-features">
+                                <li>✓ 10 credits</li>
+                                <li>✓ 10 credits</li>
+                                <li>✓ 10 credits</li>
+                                <li>✓ 10 credits</li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -177,4 +171,4 @@ const PlanAndPayment = () => {
     );
 };
 
-export default PlanAndPayment;
+export default PlanUpgrade;

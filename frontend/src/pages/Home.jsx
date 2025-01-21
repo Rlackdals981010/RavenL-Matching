@@ -8,6 +8,7 @@ import chatOff from "../assets/chat-off.png";
 import sendIcon from "../assets/send.png";
 import mypageIcon from "../assets/mypage.png";
 import { parseJWT } from "../utils/jwt";
+import { apiFetch } from "../utils/apiFetch";
 
 const HomePage = () => {
   const [activeTab, setActiveTab] = useState("home");
@@ -23,7 +24,7 @@ const HomePage = () => {
 
     if (token) {
       try {
-        const parsedToken = parseJWT(token); // JWT 파싱
+        const parsedToken = parseJWT(token);
         if (parsedToken) {
           setIsLoggedIn(true);
           setUserInfo({
@@ -75,23 +76,14 @@ const HomePage = () => {
     }
 
     try {
-      const response = await fetch("http://localhost:5001/search", {
+      const data = await apiFetch("/search", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
         body: JSON.stringify({ order: inputValue.trim() }),
       });
 
-      if (!response.ok) {
-        throw new Error("Failed to fetch search results.");
-      }
-
-      const data = await response.json();
       navigate("/search", { state: { results: data.result || [] } });
     } catch (error) {
-      console.error("Error fetching search results:", error);
+      console.error("Error fetching search results:", error.message);
       alert("Failed to fetch search results. Please try again.");
     }
   };
