@@ -7,21 +7,16 @@
 }
 
 .plan-container {
-    flex: 1;
-    background-color: #f7f9fd;
     display: flex;
-
-
     justify-content: center;
-    /* 가로 방향 중앙 정렬 */
     align-items: center;
-    /* 세로 방향 중앙 정렬 */
-    /* Changed from center to flex-start */
+    gap: 20px;
+    flex-wrap: wrap; /* 플랜 카드가 줄어들 때 자동으로 다음 줄로 넘어가게 함 */
     padding: 20px;
-    padding-left: 40px;
-
-    
+    max-width: 1200px;
+    margin: 0 auto; /* 가운데 정렬 */
 }
+
 
 .plan-details {
     display: flex;
