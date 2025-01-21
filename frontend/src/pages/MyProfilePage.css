@@ -1,0 +1,223 @@
+.myprofile-container {
+    flex: 1;
+    background-color: #f7f9fd;
+    display: flex;
+    flex-direction: column;
+
+    justify-content: center;
+    /* 가로 방향 중앙 정렬 */
+    align-items: center;
+    /* 세로 방향 중앙 정렬 */
+    /* Changed from center to flex-start */
+    padding: 20px;
+    padding-left: 40px;
+}
+
+.myprofile-box {
+    width: 100%;
+    max-width: 400px;
+    background-color: white;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    overflow-y: auto;
+    /* 스크롤 가능 */
+    max-height: 90vh;
+    /* 화면 높이 제한 */
+}
+
+.myprofile-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.myprofile-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.myprofile-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.myprofile-input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.myprofile-input-group label {
+    font-weight: bold;
+    font-size: 0.9rem;
+    max-width: 300px;
+    display: inline-block;
+}
+
+.myprofile-input-group input {
+    width: 90%;
+    height: 44px;
+    padding: 0 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 5px;
+    font-size: 0.875rem;
+}
+
+.myprofile-input-group input:focus {
+    outline: none;
+    border-color: #2563eb;
+    box-shadow: 0 0 0 1px #2563eb;
+}
+
+.myprofile-purpose-options {
+    display: flex;
+    gap: 10px;
+    margin-top: 0.5rem;
+}
+
+.myprofile-purpose-button {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #d1d5db;
+    border-radius: 5px;
+    background-color: white;
+    cursor: pointer;
+    text-align: center;
+}
+
+.myprofile-purpose-button.selected {
+    border-color: #2563eb;
+    color: white;
+    background-color: #2563eb;
+}
+
+.myprofile-save-button {
+    width: 100%;
+    height: 45px;
+    background-color: #2563eb;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    text-align: center;
+}
+
+.myprofile-save-button:hover {
+    background-color: #1d4ed8;
+}
+
+.myprofile-save-button:disabled {
+    background-color: #93c5fd;
+    cursor: not-allowed;
+}
+
+.myprofile-purpose-button {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #d1d5db;
+    border-radius: 5px;
+    background-color: white;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.myprofile-purpose-button.selected {
+    border-color: #2563eb;
+    color: white;
+    background-color: #2563eb;
+}
+
+.myprofile-purpose-button:hover {
+    border-color: #1d4ed8;
+    background-color: #93c5fd;
+}
+
+
+
+.myprofile-password-section {
+    width: 100%;
+    max-width: 400px;
+    margin-top: 2rem;
+    /* 위 섹션과 간격 추가 */
+    padding: 2rem;
+    background-color: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    /* 입력 필드 간격 */
+}
+
+.myprofile-password-section h2 {
+    font-size: 1.25rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.myprofile-password-section .myprofile-input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.myprofile-password-section .myprofile-input-group label {
+    font-weight: bold;
+    font-size: 0.9rem;
+    max-width: 300px;
+    display: inline-block;
+    color: #374151;
+}
+
+.myprofile-password-section .myprofile-input-group input {
+    width: 90%;
+    /* 기존 정보 변경 스타일에 맞춤 */
+    height: 44px;
+    padding: 0 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 5px;
+    font-size: 0.875rem;
+    color: #374151;
+    background-color: white;
+}
+
+.myprofile-password-section .myprofile-input-group input:focus {
+    outline: none;
+    border-color: #2563eb;
+    box-shadow: 0 0 0 1px #2563eb;
+}
+
+.myprofile-password-section .myprofile-save-button {
+    width: 100%;
+    height: 45px;
+    /* 정보 변경 저장 버튼과 동일 */
+    background-color: #2563eb;
+    color: white;
+    font-size: 1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.myprofile-password-section .myprofile-save-button:hover {
+    background-color: #1d4ed8;
+}
+
+.myprofile-password-section .myprofile-save-button:disabled {
+    background-color: #93c5fd;
+    cursor: not-allowed;
+}
+
+.password-warning {
+    color: red;
+    font-size: 0.85rem;
+    margin-top: 0.5rem;
+    text-align: left;
+}

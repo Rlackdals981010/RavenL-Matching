@@ -7,7 +7,7 @@ import chatOn from "../assets/chat-on.png";
 import chatOff from "../assets/chat-off.png";
 import sendIcon from "../assets/send.png";
 import mypageIcon from "../assets/mypage.png";
-import { parseJWT } from "../utils/jwt"; // parseJWT 가져오기
+import { parseJWT } from "../utils/jwt";
 
 const HomePage = () => {
   const [activeTab, setActiveTab] = useState("home");
@@ -20,17 +20,29 @@ const HomePage = () => {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
+
     if (token) {
-      setIsLoggedIn(true);
-      const parsedToken = parseJWT(token); // JWT 파싱
-      if (parsedToken) {
-        setUserInfo({
-          name: parsedToken.name || "Unknown",
-          email: parsedToken.email || "No Email",
-        });
+      try {
+        const parsedToken = parseJWT(token); // JWT 파싱
+        if (parsedToken) {
+          setIsLoggedIn(true);
+          setUserInfo({
+            name: parsedToken.name || "Unknown",
+            email: parsedToken.email || "No Email",
+          });
+        } else {
+          throw new Error("Invalid token");
+        }
+      } catch (error) {
+        console.error("Token parsing error:", error.message);
+        localStorage.removeItem("token"); // 잘못된 토큰 제거
+        navigate("/auth"); // 로그인 페이지로 리다이렉트
       }
+    } else {
+      console.warn("No token found in localStorage");
+      setIsLoggedIn(false);
     }
-  }, []);
+  }, [navigate]);
 
   const handleTabClick = (tab) => {
     setActiveTab(tab);
@@ -48,40 +60,41 @@ const HomePage = () => {
     localStorage.removeItem("token");
     setIsLoggedIn(false);
     setShowMyPagePopup(false);
+    navigate("/auth"); // 로그아웃 후 로그인 페이지로 이동
   };
 
-const handleSendClick = async () => {
-  if (!isLoggedIn) {
-    setShowLoginPopup(true);
-    return;
-  }
-
-  if (!inputValue.trim()) {
-    alert("Please enter a valid query.");
-    return;
-  }
-
-  try {
-    const response = await fetch("http://localhost:5001/search", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-      body: JSON.stringify({ order: inputValue.trim() }),
-    });
-
-    if (!response.ok) {
-      throw new Error("Failed to fetch search results.");
+  const handleSendClick = async () => {
+    if (!isLoggedIn) {
+      setShowLoginPopup(true);
+      return;
     }
 
-    const data = await response.json();
-    navigate("/search", { state: { results: data.result || [] } }); // 결과 전달
-  } catch (error) {
-    console.error("Error fetching search results:", error);
-    alert("Failed to fetch search results. Please try again.");
-  }
-};
+    if (!inputValue.trim()) {
+      alert("Please enter a valid query.");
+      return;
+    }
+
+    try {
+      const response = await fetch("http://localhost:5001/search", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: JSON.stringify({ order: inputValue.trim() }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch search results.");
+      }
+
+      const data = await response.json();
+      navigate("/search", { state: { results: data.result || [] } });
+    } catch (error) {
+      console.error("Error fetching search results:", error);
+      alert("Failed to fetch search results. Please try again.");
+    }
+  };
 
   const closeLoginPopup = () => {
     setShowLoginPopup(false);
@@ -185,8 +198,12 @@ const handleSendClick = async () => {
             </div>
           </div>
           <ul className="mypage-list">
-            <li className="mypage-item">Account & Settings</li>
-            <li className="mypage-item">Plan & Payment</li>
+            <li className="mypage-item" onClick={() => navigate("/mypage")}>
+              Account & Settings
+            </li>
+            <li className="mypage-item" onClick={() => navigate("/myplan")}>
+              Plan & Payment
+            </li>
             <li className="mypage-item">Help Center</li>
             <li className="mypage-item" onClick={handleLogout}>
               Log out

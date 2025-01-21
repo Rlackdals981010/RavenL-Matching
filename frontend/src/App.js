@@ -7,6 +7,8 @@ import NewPassword from "./pages/Newpassword";
 import Signup from "./pages/Signup";
 import ChatPage from "./pages/ChatPage"; // ChatPage 추가
 import SearchPage from "./pages/SearchResult";
+import MyProfilePage from "./pages/MyProfilePage";
+import MyPlan from "./pages/Myplan";
 
 const App = () => {
   return (
@@ -19,6 +21,8 @@ const App = () => {
         <Route path="/signup" element={<Signup />} /> {/* 회원가입 페이지 */}
         <Route path="/chat" element={<ChatPage />} />
         <Route path="/search" element={<SearchPage />} />
+        <Route path="/mypage" element={<MyProfilePage />} />
+        <Route path="/myplan" element={<MyPlan />} />
       </Routes>
     </Router>
   );

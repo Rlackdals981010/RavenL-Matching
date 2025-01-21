@@ -227,14 +227,14 @@ export default function Signup() {
                                 <div className="signup-purpose-options">
                                     <button
                                         type="button"
-                                        className={`signup-purpose-button ${purpose === "Buyer" ? "selected" : ""}`}
+                                        className={`signup-purpose-button ${purpose === "buyer" ? "selected" : ""}`}
                                         onClick={() => setPurpose("Buyer")}
                                     >
                                         Buyer
                                     </button>
                                     <button
                                         type="button"
-                                        className={`signup-purpose-button ${purpose === "Seller" ? "selected" : ""}`}
+                                        className={`signup-purpose-button ${purpose === "seller" ? "selected" : ""}`}
                                         onClick={() => setPurpose("Seller")}
                                     >
                                         Seller
